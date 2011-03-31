@@ -1,0 +1,6 @@
+<lcgdict>
+  <class name="Trk::ITrackToVertexIPEstimator"/>
+  <function name="Trk::ImpactParametersAndSigma__getD0" />
+  <function name="Trk::ImpactParametersAndSigma__getSigma" />
+</lcgdict> 
+
