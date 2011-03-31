@@ -14,6 +14,10 @@ isMC = True
 
 #############################################################################
 
+convention = 'ms'	# egamma|ms
+
+#############################################################################
+
 InputFiles = [
 	'AOD.280342._000152.pool.root'
 ]
@@ -204,8 +208,12 @@ class uD3PD(PyAthena.Alg):
 		self.StoreGateSvc = PyAthena.py_svc('StoreGateSvc')
 		self.THistSvc = PyAthena.py_svc('THistSvc')
 
-		self.Tree1 = self.THistSvc['/%s/egamma'        % Stream] = ROOT.TTree('egamma'       , 'egamma'       )
-		self.Tree2 = self.THistSvc['/%s/egammaTrigDec' % Stream] = ROOT.TTree('egammaTrigDec', 'egammaTrigDec')
+
+		if convention == 'egamma':
+			self.Tree1 = self.THistSvc['/%s/egamma'        % Stream] = ROOT.TTree('egamma'       , 'egamma'       )
+			self.Tree2 = self.THistSvc['/%s/egammaTrigDec' % Stream] = ROOT.TTree('egammaTrigDec', 'egammaTrigDec')
+		else:
+			self.Tree1 = self.Tree2 = self.THistSvc['/%s/physics' % Stream] = ROOT.TTree('physics', 'physics')
 
 		self.treeBuilder()
 		self.treeCleaner()
@@ -819,7 +827,8 @@ class uD3PD(PyAthena.Alg):
 		#############################################################
 
 		self.Tree1.Fill()
-		self.Tree2.Fill()
+		if convention == 'egamma':
+			self.Tree2.Fill()
 
 		return PyAthena.StatusCode.Success
 
