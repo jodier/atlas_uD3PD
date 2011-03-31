@@ -5,7 +5,6 @@ package uD3PD
 #############################################################################
 
 use AtlasPolicy			AtlasPolicy-01-*
-use AtlasCLHEP			AtlasCLHEP-*			External
 use GaudiInterface		GaudiInterface-*		External
 
 use TrkEventPrimitives		TrkEventPrimitives-*		Tracking/TrkEvent
