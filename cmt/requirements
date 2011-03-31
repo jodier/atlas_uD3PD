@@ -7,7 +7,6 @@ package uD3PD
 use AtlasPolicy			AtlasPolicy-01-*
 use GaudiInterface		GaudiInterface-*		External
 
-use TrkEventPrimitives		TrkEventPrimitives-*		Tracking/TrkEvent
 use TrkVertexFitterInterfaces	TrkVertexFitterInterfaces-*	Tracking/TrkVertexFitter
 
 #############################################################################
