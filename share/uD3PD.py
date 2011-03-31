@@ -262,13 +262,13 @@ class uD3PD(PyAthena.Alg):
 		##
 
 		self.Tree1.Branch('RunNumber', self.RunNumber, 'RunNumber/i')
-		self.Tree2.Branch('RunNumber', self.RunNumber, 'RunNumber/i')
-
 		self.Tree1.Branch('EventNumber', self.EventNumber, 'EventNumber/i')
-		self.Tree2.Branch('EventNumber', self.EventNumber, 'EventNumber/i')
-
 		self.Tree1.Branch('lbn', self.lbn, 'lbn/i')
-		self.Tree2.Branch('lbn', self.lbn, 'lbn/i')
+
+		if convention == 'egamma':
+			self.Tree2.Branch('RunNumber', self.RunNumber, 'RunNumber/i')
+			self.Tree2.Branch('EventNumber', self.EventNumber, 'EventNumber/i')
+			self.Tree2.Branch('lbn', self.lbn, 'lbn/i')
 
 		#########################
 		# PRIMARY VERTICES	#
@@ -655,7 +655,6 @@ class uD3PD(PyAthena.Alg):
 				track = electron.trackParticle()
 
 				if track:
-
 					r = self.TrackToVertexIPEstimator.estimate(track, vertices[0], True)
 
 					trackd0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
@@ -766,7 +765,6 @@ class uD3PD(PyAthena.Alg):
 				track = muon.track()
 
 				if track:
-
 					r = self.TrackToVertexIPEstimator.estimate(track, vertices[0], True)
 
 					trackd0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
