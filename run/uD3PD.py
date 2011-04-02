@@ -14,12 +14,12 @@ isMC = True
 
 #############################################################################
 
-convention = 'ms'	# egamma|ms
+isEGamma = False
 
 #############################################################################
 
 InputFiles = [
-	'AOD.280342._000152.pool.root'
+	'../../AOD.280342._000152.pool.root'
 ]
 
 OutputFile = 'output.root'
@@ -102,7 +102,7 @@ jobproperties.BField.endcapToroidOn.set_Value_and_Lock(True)
 #############################################################################
 
 from PoolSvc.PoolSvcConf import PoolSvc
-ServiceMgr += PoolSvc(SortReplicas = True) 
+ServiceMgr += PoolSvc(SortReplicas = True)
 
 from DBReplicaSvc.DBReplicaSvcConf import DBReplicaSvc
 ServiceMgr += DBReplicaSvc(UseCOOLSQLite = False)
@@ -209,7 +209,7 @@ class uD3PD(PyAthena.Alg):
 		self.THistSvc = PyAthena.py_svc('THistSvc')
 
 
-		if convention == 'egamma':
+		if isEGamma:
 			self.Tree1 = self.THistSvc['/%s/egamma'        % Stream] = ROOT.TTree('egamma'       , 'egamma'       )
 			self.Tree2 = self.THistSvc['/%s/egammaTrigDec' % Stream] = ROOT.TTree('egammaTrigDec', 'egammaTrigDec')
 		else:
@@ -265,7 +265,7 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('EventNumber', self.EventNumber, 'EventNumber/i')
 		self.Tree1.Branch('lbn', self.lbn, 'lbn/i')
 
-		if convention == 'egamma':
+		if isEGamma:
 			self.Tree2.Branch('RunNumber', self.RunNumber, 'RunNumber/i')
 			self.Tree2.Branch('EventNumber', self.EventNumber, 'EventNumber/i')
 			self.Tree2.Branch('lbn', self.lbn, 'lbn/i')
@@ -336,7 +336,7 @@ class uD3PD(PyAthena.Alg):
 		self.el_typebkg = ROOT.std.vector(int)()
 		self.el_originbkg = ROOT.std.vector(int)()
 
-		#
+		##
 
 		self.Tree1.Branch('el_n', self.el_n, 'el_n/I')
 
@@ -396,23 +396,67 @@ class uD3PD(PyAthena.Alg):
 
 		self.mu_muid_n = array.array('i', [0])
 
-		# TODO #
+		self.mu_muid_E = ROOT.std.vector(float)()
+		self.mu_muid_Et = ROOT.std.vector(float)()
+		self.mu_muid_pt = ROOT.std.vector(float)()
+		self.mu_muid_eta = ROOT.std.vector(float)()
+		self.mu_muid_phi = ROOT.std.vector(float)()
+		self.mu_muid_charge = ROOT.std.vector(float)()
+		self.mu_muid_author = ROOT.std.vector(int)()
+
+		self.mu_muid_ptcone20 = ROOT.std.vector(float)()
+		self.mu_muid_ptcone30 = ROOT.std.vector(float)()
+		self.mu_muid_ptcone40 = ROOT.std.vector(float)()
+
+		self.mu_muid_etcone20 = ROOT.std.vector(float)()
+		self.mu_muid_etcone30 = ROOT.std.vector(float)()
+		self.mu_muid_etcone40 = ROOT.std.vector(float)()
 
 		self.mu_muid_trackd0pvunbiased = ROOT.std.vector(float)()
 		self.mu_muid_tracksigd0pvunbiased = ROOT.std.vector(float)()
 
-		# TODO #
+		self.mu_muid_truth_type = ROOT.std.vector(int)()
+		self.mu_muid_truth_mothertype = ROOT.std.vector(int)()
+		self.mu_muid_truth_barbode = ROOT.std.vector(int)()
+		self.mu_muid_truth_motherbarcode = ROOT.std.vector(int)()
+
+		self.mu_muid_type = ROOT.std.vector(int)()
+		self.mu_muid_origin = ROOT.std.vector(int)()
+		self.mu_muid_typebkg = ROOT.std.vector(int)()
+		self.mu_muid_originbkg = ROOT.std.vector(int)()
 
 		##
 
 		self.Tree1.Branch('mu_muid_n', self.mu_muid_n, 'mu_muid_n/I')
 
-		# TODO #
+		self.Tree1.Branch('mu_muid_E', self.mu_muid_E)
+		self.Tree1.Branch('mu_muid_Et', self.mu_muid_Et)
+		self.Tree1.Branch('mu_muid_pt', self.mu_muid_pt)
+		self.Tree1.Branch('mu_muid_eta', self.mu_muid_eta)
+		self.Tree1.Branch('mu_muid_phi', self.mu_muid_phi)
+		self.Tree1.Branch('mu_muid_charge', self.mu_muid_charge)
+		self.Tree1.Branch('mu_muid_author', self.mu_muid_author)
+
+		self.Tree1.Branch('mu_muid_ptcone20', self.mu_muid_ptcone20)
+		self.Tree1.Branch('mu_muid_ptcone30', self.mu_muid_ptcone30)
+		self.Tree1.Branch('mu_muid_ptcone40', self.mu_muid_ptcone40)
+
+		self.Tree1.Branch('mu_muid_etcone20', self.mu_muid_etcone20)
+		self.Tree1.Branch('mu_muid_etcone30', self.mu_muid_etcone30)
+		self.Tree1.Branch('mu_muid_etcone40', self.mu_muid_etcone40)
 
 		self.Tree1.Branch('mu_muid_trackd0pvunbiased', self.mu_muid_trackd0pvunbiased)
 		self.Tree1.Branch('mu_muid_tracksigd0pvunbiased', self.mu_muid_tracksigd0pvunbiased)
 
-		# TODO #
+		self.Tree1.Branch('mu_muid_truth_type', self.mu_muid_truth_type)
+		self.Tree1.Branch('mu_muid_truth_mothertype', self.mu_muid_truth_mothertype)
+		self.Tree1.Branch('mu_muid_truth_barbode', self.mu_muid_truth_barbode)
+		self.Tree1.Branch('mu_muid_truth_motherbarcode', self.mu_muid_truth_motherbarcode)
+
+		self.Tree1.Branch('mu_muid_type', self.mu_muid_type)
+		self.Tree1.Branch('mu_muid_origin', self.mu_muid_origin)
+		self.Tree1.Branch('mu_muid_typebkg', self.mu_muid_typebkg)
+		self.Tree1.Branch('mu_muid_originbkg', self.mu_muid_originbkg)
 
 		#########################
 		# TRIGGERS		#
@@ -511,12 +555,34 @@ class uD3PD(PyAthena.Alg):
 
 		self.mu_muid_n[0] = 0
 
-		# TODO #
+		self.mu_muid_E.clear()
+		self.mu_muid_Et.clear()
+		self.mu_muid_pt.clear()
+		self.mu_muid_eta.clear()
+		self.mu_muid_phi.clear()
+		self.mu_muid_charge.clear()
+		self.mu_muid_author.clear()
+
+		self.mu_muid_ptcone20.clear()
+		self.mu_muid_ptcone30.clear()
+		self.mu_muid_ptcone40.clear()
+
+		self.mu_muid_etcone20.clear()
+		self.mu_muid_etcone30.clear()
+		self.mu_muid_etcone40.clear()
 
 		self.mu_muid_trackd0pvunbiased.clear()
 		self.mu_muid_tracksigd0pvunbiased.clear()
 
-		# TODO #
+		self.mu_muid_truth_type.clear()
+		self.mu_muid_truth_barbode.clear()
+		self.mu_muid_truth_mothertype.clear()
+		self.mu_muid_truth_motherbarcode.clear()
+
+		self.mu_muid_type.clear()
+		self.mu_muid_origin.clear()
+		self.mu_muid_typebkg.clear()
+		self.mu_muid_originbkg.clear()
 
 		#########################
 		# TRIGGERS		#
@@ -754,11 +820,23 @@ class uD3PD(PyAthena.Alg):
 		if len(vertices) > 0:
 			for muon in muons:
 
-				# TODO #
+				E = muon.e()
+				Et = muon.et()
+				pt = muon.pt()
+				eta = muon.eta()
+				phi = muon.phi()
+				charge = muon.charge()
+				author = muon.author()
 
 				##
 
-				# TODO #
+				ptcone20 = muon.parameter(PyAthena.MuonParameters.ptcone20)
+				ptcone30 = muon.parameter(PyAthena.MuonParameters.ptcone30)
+				ptcone40 = muon.parameter(PyAthena.MuonParameters.ptcone40)
+
+				Etcone20 = muon.parameter(PyAthena.MuonParameters.etcone20)
+				Etcone30 = muon.parameter(PyAthena.MuonParameters.etcone30)
+				Etcone40 = muon.parameter(PyAthena.MuonParameters.etcone40)
 
 				##
 
@@ -775,16 +853,58 @@ class uD3PD(PyAthena.Alg):
 
 				##
 
-				# TODO #
+				if isMC == False:
+					truth_type = -999999
+					truth_mothertype = -999999
+					truth_barbode = -999999
+					truth_motherbarcode = -999999
+
+					epyt = -999999
+					origin = -999999
+					typebkg = -999999
+					originbkg = -999999
+
+				else:
+					truth_type = -999999		# TODO #
+					truth_mothertype = -999999	# TODO #
+					truth_barbode = -999999		# TODO #
+					truth_motherbarcode = -999999	# TODO #
+
+					epyt = -999999			# TODO #
+					origin = -999999		# TODO #
+					typebkg = -999999		# TODO #
+					originbkg = -999999		# TODO #
 
 				##
 
-				# TODO #
+				self.mu_muid_E.push_back(E)
+				self.mu_muid_Et.push_back(Et)
+				self.mu_muid_pt.push_back(pt)
+				self.mu_muid_eta.push_back(eta)
+				self.mu_muid_phi.push_back(phi)
+				self.mu_muid_charge.push_back(charge)
+				self.mu_muid_author.push_back(author)
+
+				self.mu_muid_ptcone20.push_back(ptcone20)
+				self.mu_muid_ptcone30.push_back(ptcone30)
+				self.mu_muid_ptcone40.push_back(ptcone40)
+
+				self.mu_muid_etcone20.push_back(Etcone20)
+				self.mu_muid_etcone30.push_back(Etcone30)
+				self.mu_muid_etcone40.push_back(Etcone40)
 
 				self.mu_muid_trackd0pvunbiased.push_back(trackd0pvunbiased)
 				self.mu_muid_tracksigd0pvunbiased.push_back(tracksigd0pvunbiased)
 
-				# TODO #
+				self.mu_muid_truth_type.push_back(truth_type)
+				self.mu_muid_truth_barbode.push_back(truth_barbode)
+				self.mu_muid_truth_mothertype.push_back(truth_mothertype)
+				self.mu_muid_truth_motherbarcode.push_back(truth_motherbarcode)
+
+				self.mu_muid_type.push_back(epyt)
+				self.mu_muid_origin.push_back(origin)
+				self.mu_muid_typebkg.push_back(typebkg)
+				self.mu_muid_originbkg.push_back(originbkg)
 
 				##
 
@@ -825,7 +945,7 @@ class uD3PD(PyAthena.Alg):
 		#############################################################
 
 		self.Tree1.Fill()
-		if convention == 'egamma':
+		if isEGamma:
 			self.Tree2.Fill()
 
 		return PyAthena.StatusCode.Success
