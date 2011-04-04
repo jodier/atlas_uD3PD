@@ -56,18 +56,18 @@ globalflags.ConditionsTag.set_Value_and_Lock(CondDB)
 from AthenaCommon.AthenaCommonFlags import athenaCommonFlags
 
 if InputFormat == 'ESD':
-	athenaCommonFlags.PoolESDInput.set_Value_and_Lock(InputFiles)
+	athenaCommonFlags.PoolESDInput = InputFiles
 if InputFormat == 'AOD':
-	athenaCommonFlags.PoolAODInput.set_Value_and_Lock(InputFiles)
+	athenaCommonFlags.PoolAODInput = InputFiles
 
 #############################################################################
 
 import AthenaPoolCnvSvc.ReadAthenaPool
 
 if InputFormat == 'ESD':
-	ServiceMgr.EventSelector.InputCollections = athenaCommonFlags.PoolAODInput()
-if InputFormat == 'AOD':
 	ServiceMgr.EventSelector.InputCollections = athenaCommonFlags.PoolESDInput()
+if InputFormat == 'AOD':
+	ServiceMgr.EventSelector.InputCollections = athenaCommonFlags.PoolAODInput()
 
 #############################################################################
 
@@ -423,11 +423,6 @@ class uD3PD(PyAthena.Alg):
 		self.mu_muid_truth_barbode = ROOT.std.vector(int)()
 		self.mu_muid_truth_motherbarcode = ROOT.std.vector(int)()
 
-		self.mu_muid_type = ROOT.std.vector(int)()
-		self.mu_muid_origin = ROOT.std.vector(int)()
-		self.mu_muid_typebkg = ROOT.std.vector(int)()
-		self.mu_muid_originbkg = ROOT.std.vector(int)()
-
 		##
 
 		self.Tree1.Branch('mu_muid_n', self.mu_muid_n, 'mu_muid_n/I')
@@ -455,11 +450,6 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('mu_muid_truth_mothertype', self.mu_muid_truth_mothertype)
 		self.Tree1.Branch('mu_muid_truth_barbode', self.mu_muid_truth_barbode)
 		self.Tree1.Branch('mu_muid_truth_motherbarcode', self.mu_muid_truth_motherbarcode)
-
-		self.Tree1.Branch('mu_muid_type', self.mu_muid_type)
-		self.Tree1.Branch('mu_muid_origin', self.mu_muid_origin)
-		self.Tree1.Branch('mu_muid_typebkg', self.mu_muid_typebkg)
-		self.Tree1.Branch('mu_muid_originbkg', self.mu_muid_originbkg)
 
 		#########################
 		# MUONS STACO		#
@@ -491,11 +481,6 @@ class uD3PD(PyAthena.Alg):
 		self.mu_staco_truth_barbode = ROOT.std.vector(int)()
 		self.mu_staco_truth_motherbarcode = ROOT.std.vector(int)()
 
-		self.mu_staco_type = ROOT.std.vector(int)()
-		self.mu_staco_origin = ROOT.std.vector(int)()
-		self.mu_staco_typebkg = ROOT.std.vector(int)()
-		self.mu_staco_originbkg = ROOT.std.vector(int)()
-
 		##
 
 		self.Tree1.Branch('mu_staco_n', self.mu_staco_n, 'mu_staco_n/I')
@@ -523,11 +508,6 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('mu_staco_truth_mothertype', self.mu_staco_truth_mothertype)
 		self.Tree1.Branch('mu_staco_truth_barbode', self.mu_staco_truth_barbode)
 		self.Tree1.Branch('mu_staco_truth_motherbarcode', self.mu_staco_truth_motherbarcode)
-
-		self.Tree1.Branch('mu_staco_type', self.mu_staco_type)
-		self.Tree1.Branch('mu_staco_origin', self.mu_staco_origin)
-		self.Tree1.Branch('mu_staco_typebkg', self.mu_staco_typebkg)
-		self.Tree1.Branch('mu_staco_originbkg', self.mu_staco_originbkg)
 
 		#########################
 		# TRIGGERS		#
@@ -844,10 +824,16 @@ class uD3PD(PyAthena.Alg):
 					truth_barbode = -999999		# TODO #
 					truth_motherbarcode = -999999	# TODO #
 
-					epyt = -999999			# TODO #
-					origin = -999999		# TODO #
-					typebkg = -999999		# TODO #
-					originbkg = -999999		# TODO #
+					##
+
+					epyt, origin = self.MCTruthClassifier.particleTruthClassifier(electron)
+
+					if epyt > 0 and epyt < 5:
+						mc_electron = self.MCTruthClassifier.getGenPart()
+
+						typebkg, originbkg = self.MCTruthClassifier.checkOrigOfBkgElec(mc_electron)
+					else:
+						typebkg, originbkg = -999999, -999999
 
 				##
 
