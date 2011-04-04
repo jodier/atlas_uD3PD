@@ -64,7 +64,10 @@ if InputFormat == 'AOD':
 
 import AthenaPoolCnvSvc.ReadAthenaPool
 
-ServiceMgr.EventSelector.InputCollections = InputFiles
+if InputFormat == 'ESD':
+	ServiceMgr.EventSelector.InputCollections = athenaCommonFlags.PoolAODInput()
+if InputFormat == 'AOD':
+	ServiceMgr.EventSelector.InputCollections = athenaCommonFlags.PoolESDInput()
 
 #############################################################################
 
@@ -391,7 +394,7 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('el_originbkg', self.el_originbkg)
 
 		#########################
-		# MUONS			#
+		# MUONS MUID		#
 		#########################
 
 		self.mu_muid_n = array.array('i', [0])
@@ -412,8 +415,8 @@ class uD3PD(PyAthena.Alg):
 		self.mu_muid_etcone30 = ROOT.std.vector(float)()
 		self.mu_muid_etcone40 = ROOT.std.vector(float)()
 
-		self.mu_muid_trackd0pvunbiased = ROOT.std.vector(float)()
-		self.mu_muid_tracksigd0pvunbiased = ROOT.std.vector(float)()
+		self.mu_muid_d0_exPV = ROOT.std.vector(float)()
+		self.mu_muid_cov_d0_exPV = ROOT.std.vector(float)()
 
 		self.mu_muid_truth_type = ROOT.std.vector(int)()
 		self.mu_muid_truth_mothertype = ROOT.std.vector(int)()
@@ -445,8 +448,8 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('mu_muid_etcone30', self.mu_muid_etcone30)
 		self.Tree1.Branch('mu_muid_etcone40', self.mu_muid_etcone40)
 
-		self.Tree1.Branch('mu_muid_trackd0pvunbiased', self.mu_muid_trackd0pvunbiased)
-		self.Tree1.Branch('mu_muid_tracksigd0pvunbiased', self.mu_muid_tracksigd0pvunbiased)
+		self.Tree1.Branch('mu_muid_d0_exPV', self.mu_muid_d0_exPV)
+		self.Tree1.Branch('mu_muid_cov_d0_exPV', self.mu_muid_cov_d0_exPV)
 
 		self.Tree1.Branch('mu_muid_truth_type', self.mu_muid_truth_type)
 		self.Tree1.Branch('mu_muid_truth_mothertype', self.mu_muid_truth_mothertype)
@@ -457,6 +460,74 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('mu_muid_origin', self.mu_muid_origin)
 		self.Tree1.Branch('mu_muid_typebkg', self.mu_muid_typebkg)
 		self.Tree1.Branch('mu_muid_originbkg', self.mu_muid_originbkg)
+
+		#########################
+		# MUONS STACO		#
+		#########################
+
+		self.mu_staco_n = array.array('i', [0])
+
+		self.mu_staco_E = ROOT.std.vector(float)()
+		self.mu_staco_Et = ROOT.std.vector(float)()
+		self.mu_staco_pt = ROOT.std.vector(float)()
+		self.mu_staco_eta = ROOT.std.vector(float)()
+		self.mu_staco_phi = ROOT.std.vector(float)()
+		self.mu_staco_charge = ROOT.std.vector(float)()
+		self.mu_staco_author = ROOT.std.vector(int)()
+
+		self.mu_staco_ptcone20 = ROOT.std.vector(float)()
+		self.mu_staco_ptcone30 = ROOT.std.vector(float)()
+		self.mu_staco_ptcone40 = ROOT.std.vector(float)()
+
+		self.mu_staco_etcone20 = ROOT.std.vector(float)()
+		self.mu_staco_etcone30 = ROOT.std.vector(float)()
+		self.mu_staco_etcone40 = ROOT.std.vector(float)()
+
+		self.mu_staco_d0_exPV = ROOT.std.vector(float)()
+		self.mu_staco_cov_d0_exPV = ROOT.std.vector(float)()
+
+		self.mu_staco_truth_type = ROOT.std.vector(int)()
+		self.mu_staco_truth_mothertype = ROOT.std.vector(int)()
+		self.mu_staco_truth_barbode = ROOT.std.vector(int)()
+		self.mu_staco_truth_motherbarcode = ROOT.std.vector(int)()
+
+		self.mu_staco_type = ROOT.std.vector(int)()
+		self.mu_staco_origin = ROOT.std.vector(int)()
+		self.mu_staco_typebkg = ROOT.std.vector(int)()
+		self.mu_staco_originbkg = ROOT.std.vector(int)()
+
+		##
+
+		self.Tree1.Branch('mu_staco_n', self.mu_staco_n, 'mu_staco_n/I')
+
+		self.Tree1.Branch('mu_staco_E', self.mu_staco_E)
+		self.Tree1.Branch('mu_staco_Et', self.mu_staco_Et)
+		self.Tree1.Branch('mu_staco_pt', self.mu_staco_pt)
+		self.Tree1.Branch('mu_staco_eta', self.mu_staco_eta)
+		self.Tree1.Branch('mu_staco_phi', self.mu_staco_phi)
+		self.Tree1.Branch('mu_staco_charge', self.mu_staco_charge)
+		self.Tree1.Branch('mu_staco_author', self.mu_staco_author)
+
+		self.Tree1.Branch('mu_staco_ptcone20', self.mu_staco_ptcone20)
+		self.Tree1.Branch('mu_staco_ptcone30', self.mu_staco_ptcone30)
+		self.Tree1.Branch('mu_staco_ptcone40', self.mu_staco_ptcone40)
+
+		self.Tree1.Branch('mu_staco_etcone20', self.mu_staco_etcone20)
+		self.Tree1.Branch('mu_staco_etcone30', self.mu_staco_etcone30)
+		self.Tree1.Branch('mu_staco_etcone40', self.mu_staco_etcone40)
+
+		self.Tree1.Branch('mu_staco_d0_exPV', self.mu_staco_d0_exPV)
+		self.Tree1.Branch('mu_staco_cov_d0_exPV', self.mu_staco_cov_d0_exPV)
+
+		self.Tree1.Branch('mu_staco_truth_type', self.mu_staco_truth_type)
+		self.Tree1.Branch('mu_staco_truth_mothertype', self.mu_staco_truth_mothertype)
+		self.Tree1.Branch('mu_staco_truth_barbode', self.mu_staco_truth_barbode)
+		self.Tree1.Branch('mu_staco_truth_motherbarcode', self.mu_staco_truth_motherbarcode)
+
+		self.Tree1.Branch('mu_staco_type', self.mu_staco_type)
+		self.Tree1.Branch('mu_staco_origin', self.mu_staco_origin)
+		self.Tree1.Branch('mu_staco_typebkg', self.mu_staco_typebkg)
+		self.Tree1.Branch('mu_staco_originbkg', self.mu_staco_originbkg)
 
 		#########################
 		# TRIGGERS		#
@@ -550,7 +621,7 @@ class uD3PD(PyAthena.Alg):
 		self.el_originbkg.clear()
 
 		#########################
-		# MUONS			#
+		# MUONS MUID		#
 		#########################
 
 		self.mu_muid_n[0] = 0
@@ -571,18 +642,43 @@ class uD3PD(PyAthena.Alg):
 		self.mu_muid_etcone30.clear()
 		self.mu_muid_etcone40.clear()
 
-		self.mu_muid_trackd0pvunbiased.clear()
-		self.mu_muid_tracksigd0pvunbiased.clear()
+		self.mu_muid_d0_exPV.clear()
+		self.mu_muid_cov_d0_exPV.clear()
 
 		self.mu_muid_truth_type.clear()
 		self.mu_muid_truth_barbode.clear()
 		self.mu_muid_truth_mothertype.clear()
 		self.mu_muid_truth_motherbarcode.clear()
 
-		self.mu_muid_type.clear()
-		self.mu_muid_origin.clear()
-		self.mu_muid_typebkg.clear()
-		self.mu_muid_originbkg.clear()
+		#########################
+		# MUONS STACO		#
+		#########################
+
+		self.mu_staco_n[0] = 0
+
+		self.mu_staco_E.clear()
+		self.mu_staco_Et.clear()
+		self.mu_staco_pt.clear()
+		self.mu_staco_eta.clear()
+		self.mu_staco_phi.clear()
+		self.mu_staco_charge.clear()
+		self.mu_staco_author.clear()
+
+		self.mu_staco_ptcone20.clear()
+		self.mu_staco_ptcone30.clear()
+		self.mu_staco_ptcone40.clear()
+
+		self.mu_staco_etcone20.clear()
+		self.mu_staco_etcone30.clear()
+		self.mu_staco_etcone40.clear()
+
+		self.mu_staco_d0_exPV.clear()
+		self.mu_staco_cov_d0_exPV.clear()
+
+		self.mu_staco_truth_type.clear()
+		self.mu_staco_truth_barbode.clear()
+		self.mu_staco_truth_mothertype.clear()
+		self.mu_staco_truth_motherbarcode.clear()
 
 		#########################
 		# TRIGGERS		#
@@ -810,7 +906,7 @@ class uD3PD(PyAthena.Alg):
 				self.el_n[0] += 1
 
 		#############################################################
-		# MUONS							    #
+		# MUONS MUID						    #
 		#############################################################
 
 		muons = self.StoreGateSvc['MuidMuonCollection']
@@ -845,8 +941,8 @@ class uD3PD(PyAthena.Alg):
 				if track:
 					r = self.TrackToVertexIPEstimator.estimate(track, vertices[0], True)
 
-					trackd0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
-					tracksigd0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getSigma(r)
+					d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
+					cov_d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getSigma(r)
 
 				else:
 					continue
@@ -859,21 +955,11 @@ class uD3PD(PyAthena.Alg):
 					truth_barbode = -999999
 					truth_motherbarcode = -999999
 
-					epyt = -999999
-					origin = -999999
-					typebkg = -999999
-					originbkg = -999999
-
 				else:
 					truth_type = -999999		# TODO #
 					truth_mothertype = -999999	# TODO #
 					truth_barbode = -999999		# TODO #
 					truth_motherbarcode = -999999	# TODO #
-
-					epyt = -999999			# TODO #
-					origin = -999999		# TODO #
-					typebkg = -999999		# TODO #
-					originbkg = -999999		# TODO #
 
 				##
 
@@ -893,22 +979,103 @@ class uD3PD(PyAthena.Alg):
 				self.mu_muid_etcone30.push_back(Etcone30)
 				self.mu_muid_etcone40.push_back(Etcone40)
 
-				self.mu_muid_trackd0pvunbiased.push_back(trackd0pvunbiased)
-				self.mu_muid_tracksigd0pvunbiased.push_back(tracksigd0pvunbiased)
+				self.mu_muid_d0_exPV.push_back(d0_exPV)
+				self.mu_muid_cov_d0_exPV.push_back(cov_d0_exPV)
 
 				self.mu_muid_truth_type.push_back(truth_type)
 				self.mu_muid_truth_barbode.push_back(truth_barbode)
 				self.mu_muid_truth_mothertype.push_back(truth_mothertype)
 				self.mu_muid_truth_motherbarcode.push_back(truth_motherbarcode)
 
-				self.mu_muid_type.push_back(epyt)
-				self.mu_muid_origin.push_back(origin)
-				self.mu_muid_typebkg.push_back(typebkg)
-				self.mu_muid_originbkg.push_back(originbkg)
-
 				##
 
 				self.mu_muid_n[0] += 1
+
+		#############################################################
+		# MUONS STACO						    #
+		#############################################################
+
+		muons = self.StoreGateSvc['StacoMuonCollection']
+
+		#############################################################
+
+		if len(vertices) > 0:
+			for muon in muons:
+
+				E = muon.e()
+				Et = muon.et()
+				pt = muon.pt()
+				eta = muon.eta()
+				phi = muon.phi()
+				charge = muon.charge()
+				author = muon.author()
+
+				##
+
+				ptcone20 = muon.parameter(PyAthena.MuonParameters.ptcone20)
+				ptcone30 = muon.parameter(PyAthena.MuonParameters.ptcone30)
+				ptcone40 = muon.parameter(PyAthena.MuonParameters.ptcone40)
+
+				Etcone20 = muon.parameter(PyAthena.MuonParameters.etcone20)
+				Etcone30 = muon.parameter(PyAthena.MuonParameters.etcone30)
+				Etcone40 = muon.parameter(PyAthena.MuonParameters.etcone40)
+
+				##
+
+				track = muon.track()
+
+				if track:
+					r = self.TrackToVertexIPEstimator.estimate(track, vertices[0], True)
+
+					d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
+					cov_d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getSigma(r)
+
+				else:
+					continue
+
+				##
+
+				if isMC == False:
+					truth_type = -999999
+					truth_mothertype = -999999
+					truth_barbode = -999999
+					truth_motherbarcode = -999999
+
+				else:
+					truth_type = -999999		# TODO #
+					truth_mothertype = -999999	# TODO #
+					truth_barbode = -999999		# TODO #
+					truth_motherbarcode = -999999	# TODO #
+
+				##
+
+				self.mu_staco_E.push_back(E)
+				self.mu_staco_Et.push_back(Et)
+				self.mu_staco_pt.push_back(pt)
+				self.mu_staco_eta.push_back(eta)
+				self.mu_staco_phi.push_back(phi)
+				self.mu_staco_charge.push_back(charge)
+				self.mu_staco_author.push_back(author)
+
+				self.mu_staco_ptcone20.push_back(ptcone20)
+				self.mu_staco_ptcone30.push_back(ptcone30)
+				self.mu_staco_ptcone40.push_back(ptcone40)
+
+				self.mu_staco_etcone20.push_back(Etcone20)
+				self.mu_staco_etcone30.push_back(Etcone30)
+				self.mu_staco_etcone40.push_back(Etcone40)
+
+				self.mu_staco_d0_exPV.push_back(d0_exPV)
+				self.mu_staco_cov_d0_exPV.push_back(cov_d0_exPV)
+
+				self.mu_staco_truth_type.push_back(truth_type)
+				self.mu_staco_truth_barbode.push_back(truth_barbode)
+				self.mu_staco_truth_mothertype.push_back(truth_mothertype)
+				self.mu_staco_truth_motherbarcode.push_back(truth_motherbarcode)
+
+				##
+
+				self.mu_staco_n[0] += 1
 
 		#############################################################
 		# TRIGGERS						    #
