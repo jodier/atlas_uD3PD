@@ -515,17 +515,23 @@ class uD3PD(PyAthena.Alg):
 
 		self.L1_EM10 = array.array('i', [0])
 		self.L1_EM14 = array.array('i', [0])
+		self.L1_MU10 = array.array('i', [0])
 
 		self.EF_e10_medium = array.array('i', [0])
 		self.EF_e15_medium = array.array('i', [0])
+		self.EF_mu10 = array.array('i', [0])
+		self.EF_mu13 = array.array('i', [0])
 
 		##
 
 		self.Tree2.Branch('L1_EM10', self.L1_EM10, 'L1_EM10/I')
 		self.Tree2.Branch('L1_EM14', self.L1_EM14, 'L1_EM14/I')
+		self.Tree2.Branch('L1_MU10', self.L1_MU10, 'L1_MU10/I')
 
 		self.Tree2.Branch('EF_e10_medium', self.EF_e10_medium, 'EF_e10_medium/I')
 		self.Tree2.Branch('EF_e15_medium', self.EF_e15_medium, 'EF_e15_medium/I')
+		self.Tree2.Branch('EF_mu10', self.EF_mu10, 'EF_mu10/I')
+		self.Tree2.Branch('EF_mu13', self.EF_mu13, 'EF_mu13/I')
 
 	#####################################################################
 
@@ -666,9 +672,12 @@ class uD3PD(PyAthena.Alg):
 
 		self.L1_EM10[0] = 0
 		self.L1_EM14[0] = 0
+		self.L1_MU10[0] = 0
 
 		self.EF_e10_medium[0] = 0
 		self.EF_e15_medium[0] = 0
+		self.EF_mu10[0] = 0
+		self.EF_mu13[0] = 0
 
 	#####################################################################
 
@@ -752,8 +761,11 @@ class uD3PD(PyAthena.Alg):
 
 					if detail and isinstance(detail, PyAthena.EMShower) and electron.detailName(i) == 'egDetailAOD':
 
-						reta = detail.e237() /\
-							    detail.e277()
+						if detail.e277() != 0.0:
+							reta = detail.e237() / detail.e277()
+						else:
+							reta =   -999999.0   /   +1.000000
+
 						weta2 = detail.weta2()
 
 						ptcone20 = detail.ptcone20()
@@ -828,7 +840,9 @@ class uD3PD(PyAthena.Alg):
 
 					epyt, origin = self.MCTruthClassifier.particleTruthClassifier(electron)
 
-					if epyt > 0 and epyt < 5:
+					if epyt > 0 \
+					   and      \
+					   epyt < 5:
 						mc_electron = self.MCTruthClassifier.getGenPart()
 
 						typebkg, originbkg = self.MCTruthClassifier.checkOrigOfBkgElec(mc_electron)
@@ -1084,6 +1098,9 @@ class uD3PD(PyAthena.Alg):
 			if ctp_item == 'L1_EM14':
 				self.L1_EM14[0] = 1
 
+			if ctp_item == 'L1_MU10':
+				self.L1_MU10[0] = 1
+
 		if self.TrigDecisionTool.getChainGroup('EF_e10_medium').isPassed():
 			self.EF_e10_medium[0] = 1
 		else:
@@ -1093,6 +1110,16 @@ class uD3PD(PyAthena.Alg):
 			self.EF_e15_medium[0] = 1
 		else:
 			self.EF_e15_medium[0] = 0
+
+		if self.TrigDecisionTool.getChainGroup('EF_mu10').isPassed():
+			self.EF_mu10[0] = 1
+		else:
+			self.EF_mu10[0] = 0
+
+		if self.TrigDecisionTool.getChainGroup('EF_mu13').isPassed():
+			self.EF_mu13[0] = 1
+		else:
+			self.EF_mu13[0] = 0
 
 		#############################################################
 		#############################################################
