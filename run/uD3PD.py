@@ -695,10 +695,12 @@ class uD3PD(PyAthena.Alg):
 
 		L = self.StoreGateSvc.keys()
 
-		if 'MyEvent' in L:
+		if   'MyEvent' in L:
 			event = self.StoreGateSvc['MyEvent']
 		elif 'McEventInfo' in L:
 			event = self.StoreGateSvc['McEventInfo']
+		else:
+			return PyAthena.StatusCode.Failure
 
 		eventID = event.event_ID()
 
