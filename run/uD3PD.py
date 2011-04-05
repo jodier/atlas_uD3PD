@@ -155,7 +155,7 @@ ToolSvc += Trig__TrigDecisionTool(name = 'TrigDecisionTool')
 
 from TrkExTools.AtlasExtrapolator import AtlasExtrapolator
 
-theAtlasExtrapolator = AtlasExtrapolator()
+theAtlasExtrapolator = AtlasExtrapolator(name = 'AtlasExtrapolator')
 ToolSvc += theAtlasExtrapolator
 
 #################################
