@@ -322,9 +322,9 @@ class uD3PD(PyAthena.Alg):
 		self.el_Etcone30 = ROOT.std.vector(float)()
 		self.el_Etcone40 = ROOT.std.vector(float)()
 
-		self.el_Etcone20_corrected = ROOT.std.vector(float)()
-		self.el_Etcone30_corrected = ROOT.std.vector(float)()
-		self.el_Etcone40_corrected = ROOT.std.vector(float)()
+		self.el_Etcone20_pt_corrected = ROOT.std.vector(float)()
+		self.el_Etcone30_pt_corrected = ROOT.std.vector(float)()
+		self.el_Etcone40_pt_corrected = ROOT.std.vector(float)()
 
 		self.el_trackd0pvunbiased = ROOT.std.vector(float)()
 		self.el_tracksigd0pvunbiased = ROOT.std.vector(float)()
@@ -376,9 +376,9 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('el_Etcone30', self.el_Etcone30)
 		self.Tree1.Branch('el_Etcone40', self.el_Etcone40)
 
-		self.Tree1.Branch('el_Etcone20_corrected', self.el_Etcone20_corrected)
-		self.Tree1.Branch('el_Etcone30_corrected', self.el_Etcone30_corrected)
-		self.Tree1.Branch('el_Etcone40_corrected', self.el_Etcone40_corrected)
+		self.Tree1.Branch('el_Etcone20_pt_corrected', self.el_Etcone20_pt_corrected)
+		self.Tree1.Branch('el_Etcone30_pt_corrected', self.el_Etcone30_pt_corrected)
+		self.Tree1.Branch('el_Etcone40_pt_corrected', self.el_Etcone40_pt_corrected)
 
 		self.Tree1.Branch('el_trackd0pvunbiased', self.el_trackd0pvunbiased)
 		self.Tree1.Branch('el_tracksigd0pvunbiased', self.el_tracksigd0pvunbiased)
@@ -589,9 +589,9 @@ class uD3PD(PyAthena.Alg):
 		self.el_Etcone30.clear()
 		self.el_Etcone40.clear()
 
-		self.el_Etcone20_corrected.clear()
-		self.el_Etcone30_corrected.clear()
-		self.el_Etcone40_corrected.clear()
+		self.el_Etcone20_pt_corrected.clear()
+		self.el_Etcone30_pt_corrected.clear()
+		self.el_Etcone40_pt_corrected.clear()
 
 		self.el_trackd0pvunbiased.clear()
 		self.el_tracksigd0pvunbiased.clear()
@@ -776,9 +776,9 @@ class uD3PD(PyAthena.Alg):
 						Etcone30 = detail.etcone30()
 						Etcone40 = detail.etcone40()
 
-						Etcone20_corrected = -999999.0
-						Etcone30_corrected = -999999.0
-						Etcone40_corrected = -999999.0
+						Etcone20_pt_corrected = -999999.0
+						Etcone30_pt_corrected = -999999.0
+						Etcone40_pt_corrected = -999999.0
 
 						is_ok = True
 
@@ -884,9 +884,9 @@ class uD3PD(PyAthena.Alg):
 				self.el_Etcone30.push_back(Etcone30)
 				self.el_Etcone40.push_back(Etcone40)
 
-				self.el_Etcone20_corrected.push_back(Etcone20_corrected)
-				self.el_Etcone30_corrected.push_back(Etcone30_corrected)
-				self.el_Etcone40_corrected.push_back(Etcone40_corrected)
+				self.el_Etcone20_corrected.push_back(Etcone20_pt_corrected)
+				self.el_Etcone30_corrected.push_back(Etcone30_pt_corrected)
+				self.el_Etcone40_corrected.push_back(Etcone40_pt_corrected)
 
 				self.el_trackd0pvunbiased.push_back(trackd0pvunbiased)
 				self.el_tracksigd0pvunbiased.push_back(tracksigd0pvunbiased)
