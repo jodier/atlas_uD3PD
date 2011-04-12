@@ -327,7 +327,9 @@ class uD3PD(PyAthena.Alg):
 		self.el_Etcone40_pt_corrected = ROOT.std.vector(float)()
 
 		self.el_trackd0pvunbiased = ROOT.std.vector(float)()
+		self.el_trackz0pvunbiased = ROOT.std.vector(float)()
 		self.el_tracksigd0pvunbiased = ROOT.std.vector(float)()
+		self.el_tracksigz0pvunbiased = ROOT.std.vector(float)()
 
 		self.el_truth_type = ROOT.std.vector(int)()
 		self.el_truth_mothertype = ROOT.std.vector(int)()
@@ -381,7 +383,9 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('el_Etcone40_pt_corrected', self.el_Etcone40_pt_corrected)
 
 		self.Tree1.Branch('el_trackd0pvunbiased', self.el_trackd0pvunbiased)
+		self.Tree1.Branch('el_trackz0pvunbiased', self.el_trackz0pvunbiased)
 		self.Tree1.Branch('el_tracksigd0pvunbiased', self.el_tracksigd0pvunbiased)
+		self.Tree1.Branch('el_tracksigz0pvunbiased', self.el_tracksigz0pvunbiased)
 
 		self.Tree1.Branch('el_truth_type', self.el_truth_type)
 		self.Tree1.Branch('el_truth_mothertype', self.el_truth_mothertype)
@@ -416,7 +420,9 @@ class uD3PD(PyAthena.Alg):
 		self.mu_muid_etcone40 = ROOT.std.vector(float)()
 
 		self.mu_muid_d0_exPV = ROOT.std.vector(float)()
+		self.mu_muid_z0_exPV = ROOT.std.vector(float)()
 		self.mu_muid_cov_d0_exPV = ROOT.std.vector(float)()
+		self.mu_muid_cov_z0_exPV = ROOT.std.vector(float)()
 
 		self.mu_muid_truth_type = ROOT.std.vector(int)()
 		self.mu_muid_truth_mothertype = ROOT.std.vector(int)()
@@ -444,7 +450,9 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('mu_muid_etcone40', self.mu_muid_etcone40)
 
 		self.Tree1.Branch('mu_muid_d0_exPV', self.mu_muid_d0_exPV)
+		self.Tree1.Branch('mu_muid_z0_exPV', self.mu_muid_z0_exPV)
 		self.Tree1.Branch('mu_muid_cov_d0_exPV', self.mu_muid_cov_d0_exPV)
+		self.Tree1.Branch('mu_muid_cov_z0_exPV', self.mu_muid_cov_z0_exPV)
 
 		self.Tree1.Branch('mu_muid_truth_type', self.mu_muid_truth_type)
 		self.Tree1.Branch('mu_muid_truth_mothertype', self.mu_muid_truth_mothertype)
@@ -474,7 +482,9 @@ class uD3PD(PyAthena.Alg):
 		self.mu_staco_etcone40 = ROOT.std.vector(float)()
 
 		self.mu_staco_d0_exPV = ROOT.std.vector(float)()
+		self.mu_staco_z0_exPV = ROOT.std.vector(float)()
 		self.mu_staco_cov_d0_exPV = ROOT.std.vector(float)()
+		self.mu_staco_cov_z0_exPV = ROOT.std.vector(float)()
 
 		self.mu_staco_truth_type = ROOT.std.vector(int)()
 		self.mu_staco_truth_mothertype = ROOT.std.vector(int)()
@@ -502,7 +512,9 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('mu_staco_etcone40', self.mu_staco_etcone40)
 
 		self.Tree1.Branch('mu_staco_d0_exPV', self.mu_staco_d0_exPV)
+		self.Tree1.Branch('mu_staco_z0_exPV', self.mu_staco_z0_exPV)
 		self.Tree1.Branch('mu_staco_cov_d0_exPV', self.mu_staco_cov_d0_exPV)
+		self.Tree1.Branch('mu_staco_cov_z0_exPV', self.mu_staco_cov_z0_exPV)
 
 		self.Tree1.Branch('mu_staco_truth_type', self.mu_staco_truth_type)
 		self.Tree1.Branch('mu_staco_truth_mothertype', self.mu_staco_truth_mothertype)
@@ -513,25 +525,29 @@ class uD3PD(PyAthena.Alg):
 		# TRIGGERS		#
 		#########################
 
-		self.L1_EM10 = array.array('i', [0])
 		self.L1_EM14 = array.array('i', [0])
 		self.L1_MU10 = array.array('i', [0])
 
-		self.EF_e10_medium = array.array('i', [0])
 		self.EF_e15_medium = array.array('i', [0])
+		self.EF_e20_medium = array.array('i', [0])
 		self.EF_mu10 = array.array('i', [0])
-		self.EF_mu13 = array.array('i', [0])
+		self.EF_mu10_MG = array.array('i', [0])
+		self.EF_mu13_MG = array.array('i', [0])
+		self.EF_mu13_MG_tight = array.array('i', [0])
+		self.EF_mu20_MG = array.array('i', [0])
 
 		##
 
-		self.Tree2.Branch('L1_EM10', self.L1_EM10, 'L1_EM10/I')
 		self.Tree2.Branch('L1_EM14', self.L1_EM14, 'L1_EM14/I')
 		self.Tree2.Branch('L1_MU10', self.L1_MU10, 'L1_MU10/I')
 
-		self.Tree2.Branch('EF_e10_medium', self.EF_e10_medium, 'EF_e10_medium/I')
-		self.Tree2.Branch('EF_e15_medium', self.EF_e15_medium, 'EF_e15_medium/I')
-		self.Tree2.Branch('EF_mu10', self.EF_mu10, 'EF_mu10/I')
-		self.Tree2.Branch('EF_mu13', self.EF_mu13, 'EF_mu13/I')
+		self.Tree2.Branch('EF_e15_medium'   , self.EF_e15_medium   , 'EF_e15_medium/I')
+		self.Tree2.Branch('EF_e20_medium'   , self.EF_e20_medium   , 'EF_e20_medium/I')
+		self.Tree2.Branch('EF_mu10'         , self.EF_mu10         , 'EF_mu10/I')
+		self.Tree2.Branch('EF_mu10_MG'      , self.EF_mu10_MG      , 'EF_mu10_MG/I')
+		self.Tree2.Branch('EF_mu13_MG'      , self.EF_mu13_MG      , 'EF_mu13_MG/I')
+		self.Tree2.Branch('EF_mu13_MG_tight', self.EF_mu13_MG_tight, 'EF_mu13_MG_tight/I')
+		self.Tree2.Branch('EF_mu20_MG'      , self.EF_mu20_MG      , 'EF_mu20_MG/I')
 
 	#####################################################################
 
@@ -594,7 +610,9 @@ class uD3PD(PyAthena.Alg):
 		self.el_Etcone40_pt_corrected.clear()
 
 		self.el_trackd0pvunbiased.clear()
+		self.el_trackz0pvunbiased.clear()
 		self.el_tracksigd0pvunbiased.clear()
+		self.el_tracksigz0pvunbiased.clear()
 
 		self.el_truth_type.clear()
 		self.el_truth_barbode.clear()
@@ -629,7 +647,9 @@ class uD3PD(PyAthena.Alg):
 		self.mu_muid_etcone40.clear()
 
 		self.mu_muid_d0_exPV.clear()
+		self.mu_muid_z0_exPV.clear()
 		self.mu_muid_cov_d0_exPV.clear()
+		self.mu_muid_cov_z0_exPV.clear()
 
 		self.mu_muid_truth_type.clear()
 		self.mu_muid_truth_barbode.clear()
@@ -659,7 +679,9 @@ class uD3PD(PyAthena.Alg):
 		self.mu_staco_etcone40.clear()
 
 		self.mu_staco_d0_exPV.clear()
+		self.mu_staco_z0_exPV.clear()
 		self.mu_staco_cov_d0_exPV.clear()
+		self.mu_staco_cov_z0_exPV.clear()
 
 		self.mu_staco_truth_type.clear()
 		self.mu_staco_truth_barbode.clear()
@@ -670,14 +692,16 @@ class uD3PD(PyAthena.Alg):
 		# TRIGGERS		#
 		#########################
 
-		self.L1_EM10[0] = 0
 		self.L1_EM14[0] = 0
 		self.L1_MU10[0] = 0
 
-		self.EF_e10_medium[0] = 0
 		self.EF_e15_medium[0] = 0
+		self.EF_e20_medium[0] = 0
 		self.EF_mu10[0] = 0
-		self.EF_mu13[0] = 0
+		self.EF_mu10_MG[0] = 0
+		self.EF_mu13_MG[0] = 0
+		self.EF_mu13_MG_tight[0] = 0
+		self.EF_mu20_MG[0] = 0
 
 	#####################################################################
 
@@ -819,7 +843,10 @@ class uD3PD(PyAthena.Alg):
 					r = self.TrackToVertexIPEstimator.estimate(track, vertices[0], True)
 
 					trackd0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
-					tracksigd0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getSigma(r)
+					trackz0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getZ0(r)
+
+					tracksigd0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getSigmaD0(r)
+					tracksigz0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getSigmaZ0(r)
 
 				else:
 					continue
@@ -896,7 +923,10 @@ class uD3PD(PyAthena.Alg):
 				self.el_Etcone40_pt_corrected.push_back(Etcone40_pt_corrected)
 
 				self.el_trackd0pvunbiased.push_back(trackd0pvunbiased)
+				self.el_trackz0pvunbiased.push_back(trackz0pvunbiased)
+
 				self.el_tracksigd0pvunbiased.push_back(tracksigd0pvunbiased)
+				self.el_tracksigz0pvunbiased.push_back(tracksigz0pvunbiased)
 
 				self.el_truth_type.push_back(truth_type)
 				self.el_truth_barbode.push_back(truth_barbode)
@@ -949,7 +979,10 @@ class uD3PD(PyAthena.Alg):
 					r = self.TrackToVertexIPEstimator.estimate(track, vertices[0], True)
 
 					d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
-					cov_d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getSigma(r)
+					z0_exPV = ROOT.Trk.ImpactParametersAndSigma__getZ0(r)
+
+					cov_d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getSigmaD0(r)
+					cov_z0_exPV = ROOT.Trk.ImpactParametersAndSigma__getSigmaZ0(r)
 
 				else:
 					continue
@@ -987,7 +1020,9 @@ class uD3PD(PyAthena.Alg):
 				self.mu_muid_etcone40.push_back(Etcone40)
 
 				self.mu_muid_d0_exPV.push_back(d0_exPV)
+				self.mu_muid_z0_exPV.push_back(z0_exPV)
 				self.mu_muid_cov_d0_exPV.push_back(cov_d0_exPV)
+				self.mu_muid_cov_z0_exPV.push_back(cov_z0_exPV)
 
 				self.mu_muid_truth_type.push_back(truth_type)
 				self.mu_muid_truth_barbode.push_back(truth_barbode)
@@ -1035,7 +1070,10 @@ class uD3PD(PyAthena.Alg):
 					r = self.TrackToVertexIPEstimator.estimate(track, vertices[0], True)
 
 					d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
-					cov_d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getSigma(r)
+					z0_exPV = ROOT.Trk.ImpactParametersAndSigma__getZ0(r)
+
+					cov_d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getSigmaD0(r)
+					cov_z0_exPV = ROOT.Trk.ImpactParametersAndSigma__getSigmaZ0(r)
 
 				else:
 					continue
@@ -1073,7 +1111,9 @@ class uD3PD(PyAthena.Alg):
 				self.mu_staco_etcone40.push_back(Etcone40)
 
 				self.mu_staco_d0_exPV.push_back(d0_exPV)
+				self.mu_staco_z0_exPV.push_back(z0_exPV)
 				self.mu_staco_cov_d0_exPV.push_back(cov_d0_exPV)
+				self.mu_staco_cov_z0_exPV.push_back(cov_z0_exPV)
 
 				self.mu_staco_truth_type.push_back(truth_type)
 				self.mu_staco_truth_barbode.push_back(truth_barbode)
@@ -1094,13 +1134,10 @@ class uD3PD(PyAthena.Alg):
 
 		#############################################################
 
-		self.L1_EM10[0] = 0
 		self.L1_EM14[0] = 0
+		self.L1_MU10[0] = 0
 
 		for ctp_item in ctp_items:
-
-			if ctp_item == 'L1_EM10':
-				self.L1_EM10[0] = 1
 
 			if ctp_item == 'L1_EM14':
 				self.L1_EM14[0] = 1
@@ -1108,25 +1145,40 @@ class uD3PD(PyAthena.Alg):
 			if ctp_item == 'L1_MU10':
 				self.L1_MU10[0] = 1
 
-		if self.TrigDecisionTool.getChainGroup('EF_e10_medium').isPassed():
-			self.EF_e10_medium[0] = 1
-		else:
-			self.EF_e10_medium[0] = 0
-
 		if self.TrigDecisionTool.getChainGroup('EF_e15_medium').isPassed():
 			self.EF_e15_medium[0] = 1
 		else:
 			self.EF_e15_medium[0] = 0
+
+		if self.TrigDecisionTool.getChainGroup('EF_e20_medium').isPassed():
+			self.EF_e20_medium[0] = 1
+		else:
+			self.EF_e20_medium[0] = 0
 
 		if self.TrigDecisionTool.getChainGroup('EF_mu10').isPassed():
 			self.EF_mu10[0] = 1
 		else:
 			self.EF_mu10[0] = 0
 
-		if self.TrigDecisionTool.getChainGroup('EF_mu13').isPassed():
-			self.EF_mu13[0] = 1
+		if self.TrigDecisionTool.getChainGroup('EF_mu10_MG').isPassed():
+			self.EF_mu10_MG[0] = 1
 		else:
-			self.EF_mu13[0] = 0
+			self.EF_mu10_MG[0] = 0
+
+		if self.TrigDecisionTool.getChainGroup('EF_mu13_MG').isPassed():
+			self.EF_mu13_MG[0] = 1
+		else:
+			self.EF_mu13_MG[0] = 0
+
+		if self.TrigDecisionTool.getChainGroup('EF_mu13_MG_tight').isPassed():
+			self.EF_mu13_MG_tight[0] = 1
+		else:
+			self.EF_mu13_MG_tight[0] = 0
+
+		if self.TrigDecisionTool.getChainGroup('EF_mu20_MG').isPassed():
+			self.EF_mu20_MG[0] = 1
+		else:
+			self.EF_mu20_MG[0] = 0
 
 		#############################################################
 		#############################################################

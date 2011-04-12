@@ -17,9 +17,19 @@ namespace Trk
 		return p->IPd0;
 	}
 
-	double ImpactParametersAndSigma__getSigma(struct ImpactParametersAndSigma *p)
+	double ImpactParametersAndSigma__getSigmaD0(struct ImpactParametersAndSigma *p)
 	{
 		return p->sigmad0;
+	}
+
+	double ImpactParametersAndSigma__getZ0(struct ImpactParametersAndSigma *p)
+	{
+		return p->IPz0;
+	}
+
+	double ImpactParametersAndSigma__getSigmaZ0(struct ImpactParametersAndSigma *p)
+	{
+		return p->sigmaz0;
 	}
 
 }
