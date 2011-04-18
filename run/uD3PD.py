@@ -279,9 +279,13 @@ class uD3PD(PyAthena.Alg):
 
 		self.vxp_n = array.array('i', [0])
 
+		self.vxp_nTracks = ROOT.std.vector(int)()
+
 		##
 
 		self.Tree1.Branch('vxp_n', self.vxp_n, 'vxp_n/I')
+
+		self.Tree1.Branch('vxp_nTracks', self.vxp_nTracks)
 
 		#########################
 		# ELECTRONS		#
@@ -325,6 +329,12 @@ class uD3PD(PyAthena.Alg):
 		self.el_Etcone20_pt_corrected = ROOT.std.vector(float)()
 		self.el_Etcone30_pt_corrected = ROOT.std.vector(float)()
 		self.el_Etcone40_pt_corrected = ROOT.std.vector(float)()
+
+		self.el_trackd0 = ROOT.std.vector(float)()
+		self.el_trackz0 = ROOT.std.vector(float)()
+		self.el_trackphi = ROOT.std.vector(float)()
+		self.el_tracktheta = ROOT.std.vector(float)()
+		self.el_trackqoverp = ROOT.std.vector(float)()
 
 		self.el_trackd0pvunbiased = ROOT.std.vector(float)()
 		self.el_trackz0pvunbiased = ROOT.std.vector(float)()
@@ -382,6 +392,12 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('el_Etcone30_pt_corrected', self.el_Etcone30_pt_corrected)
 		self.Tree1.Branch('el_Etcone40_pt_corrected', self.el_Etcone40_pt_corrected)
 
+		self.Tree1.Branch('el_trackd0', self.el_trackd0)
+		self.Tree1.Branch('el_trackz0', self.el_trackz0)
+		self.Tree1.Branch('el_trackphi', self.el_trackphi)
+		self.Tree1.Branch('el_tracktheta', self.el_tracktheta)
+		self.Tree1.Branch('el_trackqoverp', self.el_trackqoverp)
+
 		self.Tree1.Branch('el_trackd0pvunbiased', self.el_trackd0pvunbiased)
 		self.Tree1.Branch('el_trackz0pvunbiased', self.el_trackz0pvunbiased)
 		self.Tree1.Branch('el_tracksigd0pvunbiased', self.el_tracksigd0pvunbiased)
@@ -419,6 +435,12 @@ class uD3PD(PyAthena.Alg):
 		self.mu_muid_etcone30 = ROOT.std.vector(float)()
 		self.mu_muid_etcone40 = ROOT.std.vector(float)()
 
+		self.mu_muid_trackd0 = ROOT.std.vector(float)()
+		self.mu_muid_trackz0 = ROOT.std.vector(float)()
+		self.mu_muid_trackphi = ROOT.std.vector(float)()
+		self.mu_muid_tracktheta = ROOT.std.vector(float)()
+		self.mu_muid_trackqoverp = ROOT.std.vector(float)()
+
 		self.mu_muid_d0_exPV = ROOT.std.vector(float)()
 		self.mu_muid_z0_exPV = ROOT.std.vector(float)()
 		self.mu_muid_cov_d0_exPV = ROOT.std.vector(float)()
@@ -448,6 +470,12 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('mu_muid_etcone20', self.mu_muid_etcone20)
 		self.Tree1.Branch('mu_muid_etcone30', self.mu_muid_etcone30)
 		self.Tree1.Branch('mu_muid_etcone40', self.mu_muid_etcone40)
+
+		self.Tree1.Branch('mu_muid_trackd0', self.mu_muid_trackd0)
+		self.Tree1.Branch('mu_muid_trackz0', self.mu_muid_trackz0)
+		self.Tree1.Branch('mu_muid_trackphi', self.mu_muid_trackphi)
+		self.Tree1.Branch('mu_muid_tracktheta', self.mu_muid_tracktheta)
+		self.Tree1.Branch('mu_muid_trackqoverp', self.mu_muid_trackqoverp)
 
 		self.Tree1.Branch('mu_muid_d0_exPV', self.mu_muid_d0_exPV)
 		self.Tree1.Branch('mu_muid_z0_exPV', self.mu_muid_z0_exPV)
@@ -481,6 +509,12 @@ class uD3PD(PyAthena.Alg):
 		self.mu_staco_etcone30 = ROOT.std.vector(float)()
 		self.mu_staco_etcone40 = ROOT.std.vector(float)()
 
+		self.mu_staco_trackd0 = ROOT.std.vector(float)()
+		self.mu_staco_trackz0 = ROOT.std.vector(float)()
+		self.mu_staco_trackphi = ROOT.std.vector(float)()
+		self.mu_staco_tracktheta = ROOT.std.vector(float)()
+		self.mu_staco_trackqoverp = ROOT.std.vector(float)()
+
 		self.mu_staco_d0_exPV = ROOT.std.vector(float)()
 		self.mu_staco_z0_exPV = ROOT.std.vector(float)()
 		self.mu_staco_cov_d0_exPV = ROOT.std.vector(float)()
@@ -510,6 +544,12 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('mu_staco_etcone20', self.mu_staco_etcone20)
 		self.Tree1.Branch('mu_staco_etcone30', self.mu_staco_etcone30)
 		self.Tree1.Branch('mu_staco_etcone40', self.mu_staco_etcone40)
+
+		self.Tree1.Branch('mu_staco_trackd0', self.mu_staco_trackd0)
+		self.Tree1.Branch('mu_staco_trackz0', self.mu_staco_trackz0)
+		self.Tree1.Branch('mu_staco_trackphi', self.mu_staco_trackphi)
+		self.Tree1.Branch('mu_staco_tracktheta', self.mu_staco_tracktheta)
+		self.Tree1.Branch('mu_staco_trackqoverp', self.mu_staco_trackqoverp)
 
 		self.Tree1.Branch('mu_staco_d0_exPV', self.mu_staco_d0_exPV)
 		self.Tree1.Branch('mu_staco_z0_exPV', self.mu_staco_z0_exPV)
@@ -566,6 +606,8 @@ class uD3PD(PyAthena.Alg):
 
 		self.vxp_n[0] = 0
 
+		self.vxp_nTracks.clear()
+
 		#########################
 		# ELECTRONS		#
 		#########################
@@ -609,6 +651,12 @@ class uD3PD(PyAthena.Alg):
 		self.el_Etcone30_pt_corrected.clear()
 		self.el_Etcone40_pt_corrected.clear()
 
+		self.el_trackd0.clear()
+		self.el_trackz0.clear()
+		self.el_trackphi.clear()
+		self.el_tracktheta.clear()
+		self.el_trackqoverp.clear()
+
 		self.el_trackd0pvunbiased.clear()
 		self.el_trackz0pvunbiased.clear()
 		self.el_tracksigd0pvunbiased.clear()
@@ -646,6 +694,12 @@ class uD3PD(PyAthena.Alg):
 		self.mu_muid_etcone30.clear()
 		self.mu_muid_etcone40.clear()
 
+		self.mu_muid_trackd0.clear()
+		self.mu_muid_trackz0.clear()
+		self.mu_muid_trackphi.clear()
+		self.mu_muid_tracktheta.clear()
+		self.mu_muid_trackqoverp.clear()
+
 		self.mu_muid_d0_exPV.clear()
 		self.mu_muid_z0_exPV.clear()
 		self.mu_muid_cov_d0_exPV.clear()
@@ -677,6 +731,12 @@ class uD3PD(PyAthena.Alg):
 		self.mu_staco_etcone20.clear()
 		self.mu_staco_etcone30.clear()
 		self.mu_staco_etcone40.clear()
+
+		self.mu_staco_trackd0.clear()
+		self.mu_staco_trackz0.clear()
+		self.mu_staco_trackphi.clear()
+		self.mu_staco_tracktheta.clear()
+		self.mu_staco_trackqoverp.clear()
 
 		self.mu_staco_d0_exPV.clear()
 		self.mu_staco_z0_exPV.clear()
@@ -735,14 +795,19 @@ class uD3PD(PyAthena.Alg):
 		self.lbn[0] = eventID.lumi_block()
 
 		#############################################################
-		# PRIMARY VERTICES					    #
+		# PRIMARY VERTICES & PRIMARY TRACKS			    #
 		#############################################################
 
 		vertices = self.StoreGateSvc['VxPrimaryCandidate']
 
 		#############################################################
 
-		self.vxp_n[0] = len(vertices)
+		for vertex in vertices:
+			self.vxp_nTracks.push_back(len(vertex.vxTrackAtVertex()))
+
+			##
+
+			self.vxp_n[0] += 1
 
 		#############################################################
 		# ELECTRONS						    #
@@ -840,6 +905,17 @@ class uD3PD(PyAthena.Alg):
 				track = electron.trackParticle()
 
 				if track:
+					perigee = track.measuredPerigee()
+
+					if perigee:
+						trackd0 = perigee.parameters()[0]
+						trackz0 = perigee.parameters()[1]
+						trackphi = perigee.parameters()[2]
+						tracktheta = perigee.parameters()[3]
+						trackqoverp = perigee.parameters()[4]
+					else:
+						continue
+
 					r = self.TrackToVertexIPEstimator.estimate(track, vertices[0], True)
 
 					trackd0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
@@ -922,6 +998,12 @@ class uD3PD(PyAthena.Alg):
 				self.el_Etcone30_pt_corrected.push_back(Etcone30_pt_corrected)
 				self.el_Etcone40_pt_corrected.push_back(Etcone40_pt_corrected)
 
+				self.el_trackd0.push_back(trackd0)
+				self.el_trackz0.push_back(trackz0)
+				self.el_trackphi.push_back(trackphi)
+				self.el_tracktheta.push_back(tracktheta)
+				self.el_trackqoverp.push_back(trackqoverp)
+
 				self.el_trackd0pvunbiased.push_back(trackd0pvunbiased)
 				self.el_trackz0pvunbiased.push_back(trackz0pvunbiased)
 
@@ -976,6 +1058,17 @@ class uD3PD(PyAthena.Alg):
 				track = muon.track()
 
 				if track:
+					perigee = track.measuredPerigee()
+
+					if perigee:
+						trackd0 = perigee.parameters()[0]
+						trackz0 = perigee.parameters()[1]
+						trackphi = perigee.parameters()[2]
+						tracktheta = perigee.parameters()[3]
+						trackqoverp = perigee.parameters()[4]
+					else:
+						continue
+
 					r = self.TrackToVertexIPEstimator.estimate(track, vertices[0], True)
 
 					d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
@@ -1018,6 +1111,12 @@ class uD3PD(PyAthena.Alg):
 				self.mu_muid_etcone20.push_back(Etcone20)
 				self.mu_muid_etcone30.push_back(Etcone30)
 				self.mu_muid_etcone40.push_back(Etcone40)
+
+				self.mu_muid_trackd0.push_back(trackd0)
+				self.mu_muid_trackz0.push_back(trackz0)
+				self.mu_muid_trackphi.push_back(trackphi)
+				self.mu_muid_tracktheta.push_back(tracktheta)
+				self.mu_muid_trackqoverp.push_back(trackqoverp)
 
 				self.mu_muid_d0_exPV.push_back(d0_exPV)
 				self.mu_muid_z0_exPV.push_back(z0_exPV)
@@ -1067,6 +1166,17 @@ class uD3PD(PyAthena.Alg):
 				track = muon.track()
 
 				if track:
+					perigee = track.measuredPerigee()
+
+					if perigee:
+						trackd0 = perigee.parameters()[0]
+						trackz0 = perigee.parameters()[1]
+						trackphi = perigee.parameters()[2]
+						tracktheta = perigee.parameters()[3]
+						trackqoverp = perigee.parameters()[4]
+					else:
+						continue
+
 					r = self.TrackToVertexIPEstimator.estimate(track, vertices[0], True)
 
 					d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
@@ -1109,6 +1219,12 @@ class uD3PD(PyAthena.Alg):
 				self.mu_staco_etcone20.push_back(Etcone20)
 				self.mu_staco_etcone30.push_back(Etcone30)
 				self.mu_staco_etcone40.push_back(Etcone40)
+
+				self.mu_staco_trackd0.push_back(trackd0)
+				self.mu_staco_trackz0.push_back(trackz0)
+				self.mu_staco_trackphi.push_back(trackphi)
+				self.mu_staco_tracktheta.push_back(tracktheta)
+				self.mu_staco_trackqoverp.push_back(trackqoverp)
 
 				self.mu_staco_d0_exPV.push_back(d0_exPV)
 				self.mu_staco_z0_exPV.push_back(z0_exPV)
