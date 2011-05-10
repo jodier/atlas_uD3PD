@@ -206,7 +206,8 @@ class uD3PD(PyAthena.Alg):
 	#####################################################################
 
 	def initialize(self):
-		PyCintex.loadDict("libuD3PDDict.so")
+		PyCintex.loadDict("libuD3PDDict")
+		PyCintex.loadDict("libTrkTrackSummaryDict")
 
 		self.StoreGateSvc = PyAthena.py_svc('StoreGateSvc')
 		self.THistSvc = PyAthena.py_svc('THistSvc')
@@ -279,11 +280,19 @@ class uD3PD(PyAthena.Alg):
 
 		self.vxp_n = array.array('i', [0])
 
+		self.vxp_x = ROOT.std.vector(float)()
+		self.vxp_y = ROOT.std.vector(float)()
+		self.vxp_z = ROOT.std.vector(float)()
+
 		self.vxp_nTracks = ROOT.std.vector(int)()
 
 		##
 
 		self.Tree1.Branch('vxp_n', self.vxp_n, 'vxp_n/I')
+
+		self.Tree1.Branch('vxp_x', self.vxp_x)
+		self.Tree1.Branch('vxp_y', self.vxp_y)
+		self.Tree1.Branch('vxp_z', self.vxp_z)
 
 		self.Tree1.Branch('vxp_nTracks', self.vxp_nTracks)
 
@@ -301,6 +310,7 @@ class uD3PD(PyAthena.Alg):
 		self.el_charge = ROOT.std.vector(float)()
 		self.el_author = ROOT.std.vector(int)()
 		self.el_isEM = ROOT.std.vector(int)()
+		self.el_OQ = ROOT.std.vector(int)()
 
 		self.el_cl_E = ROOT.std.vector(float)()
 		self.el_cl_pt = ROOT.std.vector(float)()
@@ -329,6 +339,11 @@ class uD3PD(PyAthena.Alg):
 		self.el_Etcone20_pt_corrected = ROOT.std.vector(float)()
 		self.el_Etcone30_pt_corrected = ROOT.std.vector(float)()
 		self.el_Etcone40_pt_corrected = ROOT.std.vector(float)()
+
+		self.el_nBLHits = ROOT.std.vector(int)()
+		self.el_nPixHits = ROOT.std.vector(int)()
+		self.el_nSCTHits = ROOT.std.vector(int)()
+		self.el_nTRTHits = ROOT.std.vector(int)()
 
 		self.el_trackd0 = ROOT.std.vector(float)()
 		self.el_trackz0 = ROOT.std.vector(float)()
@@ -363,6 +378,7 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('el_charge', self.el_charge)
 		self.Tree1.Branch('el_author', self.el_author)
 		self.Tree1.Branch('el_isEM', self.el_isEM)
+		self.Tree1.Branch('el_OQ', self.el_OQ)
 
 		self.Tree1.Branch('el_cl_E', self.el_cl_E)
 		self.Tree1.Branch('el_cl_pt', self.el_cl_pt)
@@ -391,6 +407,11 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('el_Etcone20_pt_corrected', self.el_Etcone20_pt_corrected)
 		self.Tree1.Branch('el_Etcone30_pt_corrected', self.el_Etcone30_pt_corrected)
 		self.Tree1.Branch('el_Etcone40_pt_corrected', self.el_Etcone40_pt_corrected)
+
+		self.Tree1.Branch('el_nBLHits', self.el_nBLHits)
+		self.Tree1.Branch('el_nPixHits', self.el_nPixHits)
+		self.Tree1.Branch('el_nSCTHits', self.el_nSCTHits)
+		self.Tree1.Branch('el_nTRTHits', self.el_nTRTHits)
 
 		self.Tree1.Branch('el_trackd0', self.el_trackd0)
 		self.Tree1.Branch('el_trackz0', self.el_trackz0)
@@ -427,6 +448,10 @@ class uD3PD(PyAthena.Alg):
 		self.mu_muid_charge = ROOT.std.vector(float)()
 		self.mu_muid_author = ROOT.std.vector(int)()
 
+		self.mu_muid_loose = ROOT.std.vector(int)()
+		self.mu_muid_medium = ROOT.std.vector(int)()
+		self.mu_muid_tight = ROOT.std.vector(int)()
+
 		self.mu_muid_ptcone20 = ROOT.std.vector(float)()
 		self.mu_muid_ptcone30 = ROOT.std.vector(float)()
 		self.mu_muid_ptcone40 = ROOT.std.vector(float)()
@@ -435,16 +460,21 @@ class uD3PD(PyAthena.Alg):
 		self.mu_muid_etcone30 = ROOT.std.vector(float)()
 		self.mu_muid_etcone40 = ROOT.std.vector(float)()
 
+		self.mu_muid_nBLHits = ROOT.std.vector(int)()
+		self.mu_muid_nPixHits = ROOT.std.vector(int)()
+		self.mu_muid_nSCTHits = ROOT.std.vector(int)()
+		self.mu_muid_nTRTHits = ROOT.std.vector(int)()
+
 		self.mu_muid_trackd0 = ROOT.std.vector(float)()
 		self.mu_muid_trackz0 = ROOT.std.vector(float)()
 		self.mu_muid_trackphi = ROOT.std.vector(float)()
 		self.mu_muid_tracktheta = ROOT.std.vector(float)()
 		self.mu_muid_trackqoverp = ROOT.std.vector(float)()
 
-		self.mu_muid_d0_exPV = ROOT.std.vector(float)()
-		self.mu_muid_z0_exPV = ROOT.std.vector(float)()
-		self.mu_muid_cov_d0_exPV = ROOT.std.vector(float)()
-		self.mu_muid_cov_z0_exPV = ROOT.std.vector(float)()
+		self.mu_muid_trackd0pvunbiased = ROOT.std.vector(float)()
+		self.mu_muid_trackz0pvunbiased = ROOT.std.vector(float)()
+		self.mu_muid_tracksigd0pvunbiased = ROOT.std.vector(float)()
+		self.mu_muid_tracksigz0pvunbiased = ROOT.std.vector(float)()
 
 		self.mu_muid_truth_type = ROOT.std.vector(int)()
 		self.mu_muid_truth_mothertype = ROOT.std.vector(int)()
@@ -463,6 +493,10 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('mu_muid_charge', self.mu_muid_charge)
 		self.Tree1.Branch('mu_muid_author', self.mu_muid_author)
 
+		self.Tree1.Branch('mu_muid_loose', self.mu_muid_loose)
+		self.Tree1.Branch('mu_muid_medium', self.mu_muid_medium)
+		self.Tree1.Branch('mu_muid_tight', self.mu_muid_tight)
+
 		self.Tree1.Branch('mu_muid_ptcone20', self.mu_muid_ptcone20)
 		self.Tree1.Branch('mu_muid_ptcone30', self.mu_muid_ptcone30)
 		self.Tree1.Branch('mu_muid_ptcone40', self.mu_muid_ptcone40)
@@ -471,16 +505,21 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('mu_muid_etcone30', self.mu_muid_etcone30)
 		self.Tree1.Branch('mu_muid_etcone40', self.mu_muid_etcone40)
 
+		self.Tree1.Branch('mu_muid_nBLHits', self.mu_muid_nBLHits)
+		self.Tree1.Branch('mu_muid_nPixHits', self.mu_muid_nPixHits)
+		self.Tree1.Branch('mu_muid_nSCTHits', self.mu_muid_nSCTHits)
+		self.Tree1.Branch('mu_muid_nTRTHits', self.mu_muid_nTRTHits)
+
 		self.Tree1.Branch('mu_muid_trackd0', self.mu_muid_trackd0)
 		self.Tree1.Branch('mu_muid_trackz0', self.mu_muid_trackz0)
 		self.Tree1.Branch('mu_muid_trackphi', self.mu_muid_trackphi)
 		self.Tree1.Branch('mu_muid_tracktheta', self.mu_muid_tracktheta)
 		self.Tree1.Branch('mu_muid_trackqoverp', self.mu_muid_trackqoverp)
 
-		self.Tree1.Branch('mu_muid_d0_exPV', self.mu_muid_d0_exPV)
-		self.Tree1.Branch('mu_muid_z0_exPV', self.mu_muid_z0_exPV)
-		self.Tree1.Branch('mu_muid_cov_d0_exPV', self.mu_muid_cov_d0_exPV)
-		self.Tree1.Branch('mu_muid_cov_z0_exPV', self.mu_muid_cov_z0_exPV)
+		self.Tree1.Branch('mu_muid_trackd0pvunbiased', self.mu_muid_trackd0pvunbiased)
+		self.Tree1.Branch('mu_muid_trackz0pvunbiased', self.mu_muid_trackz0pvunbiased)
+		self.Tree1.Branch('mu_muid_tracksigd0pvunbiased', self.mu_muid_tracksigd0pvunbiased)
+		self.Tree1.Branch('mu_muid_tracksigz0pvunbiased', self.mu_muid_tracksigz0pvunbiased)
 
 		self.Tree1.Branch('mu_muid_truth_type', self.mu_muid_truth_type)
 		self.Tree1.Branch('mu_muid_truth_mothertype', self.mu_muid_truth_mothertype)
@@ -501,6 +540,10 @@ class uD3PD(PyAthena.Alg):
 		self.mu_staco_charge = ROOT.std.vector(float)()
 		self.mu_staco_author = ROOT.std.vector(int)()
 
+		self.mu_staco_loose = ROOT.std.vector(int)()
+		self.mu_staco_medium = ROOT.std.vector(int)()
+		self.mu_staco_tight = ROOT.std.vector(int)()
+
 		self.mu_staco_ptcone20 = ROOT.std.vector(float)()
 		self.mu_staco_ptcone30 = ROOT.std.vector(float)()
 		self.mu_staco_ptcone40 = ROOT.std.vector(float)()
@@ -509,16 +552,21 @@ class uD3PD(PyAthena.Alg):
 		self.mu_staco_etcone30 = ROOT.std.vector(float)()
 		self.mu_staco_etcone40 = ROOT.std.vector(float)()
 
+		self.mu_staco_nBLHits = ROOT.std.vector(int)()
+		self.mu_staco_nPixHits = ROOT.std.vector(int)()
+		self.mu_staco_nSCTHits = ROOT.std.vector(int)()
+		self.mu_staco_nTRTHits = ROOT.std.vector(int)()
+
 		self.mu_staco_trackd0 = ROOT.std.vector(float)()
 		self.mu_staco_trackz0 = ROOT.std.vector(float)()
 		self.mu_staco_trackphi = ROOT.std.vector(float)()
 		self.mu_staco_tracktheta = ROOT.std.vector(float)()
 		self.mu_staco_trackqoverp = ROOT.std.vector(float)()
 
-		self.mu_staco_d0_exPV = ROOT.std.vector(float)()
-		self.mu_staco_z0_exPV = ROOT.std.vector(float)()
-		self.mu_staco_cov_d0_exPV = ROOT.std.vector(float)()
-		self.mu_staco_cov_z0_exPV = ROOT.std.vector(float)()
+		self.mu_staco_trackd0pvunbiased = ROOT.std.vector(float)()
+		self.mu_staco_trackz0pvunbiased = ROOT.std.vector(float)()
+		self.mu_staco_tracksigd0pvunbiased = ROOT.std.vector(float)()
+		self.mu_staco_tracksigz0pvunbiased = ROOT.std.vector(float)()
 
 		self.mu_staco_truth_type = ROOT.std.vector(int)()
 		self.mu_staco_truth_mothertype = ROOT.std.vector(int)()
@@ -537,6 +585,10 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('mu_staco_charge', self.mu_staco_charge)
 		self.Tree1.Branch('mu_staco_author', self.mu_staco_author)
 
+		self.Tree1.Branch('mu_staco_loose', self.mu_staco_loose)
+		self.Tree1.Branch('mu_staco_medium', self.mu_staco_medium)
+		self.Tree1.Branch('mu_staco_tight', self.mu_staco_tight)
+
 		self.Tree1.Branch('mu_staco_ptcone20', self.mu_staco_ptcone20)
 		self.Tree1.Branch('mu_staco_ptcone30', self.mu_staco_ptcone30)
 		self.Tree1.Branch('mu_staco_ptcone40', self.mu_staco_ptcone40)
@@ -545,16 +597,21 @@ class uD3PD(PyAthena.Alg):
 		self.Tree1.Branch('mu_staco_etcone30', self.mu_staco_etcone30)
 		self.Tree1.Branch('mu_staco_etcone40', self.mu_staco_etcone40)
 
+		self.Tree1.Branch('mu_staco_nBLHits', self.mu_staco_nBLHits)
+		self.Tree1.Branch('mu_staco_nPixHits', self.mu_staco_nPixHits)
+		self.Tree1.Branch('mu_staco_nSCTHits', self.mu_staco_nSCTHits)
+		self.Tree1.Branch('mu_staco_nTRTHits', self.mu_staco_nTRTHits)
+
 		self.Tree1.Branch('mu_staco_trackd0', self.mu_staco_trackd0)
 		self.Tree1.Branch('mu_staco_trackz0', self.mu_staco_trackz0)
 		self.Tree1.Branch('mu_staco_trackphi', self.mu_staco_trackphi)
 		self.Tree1.Branch('mu_staco_tracktheta', self.mu_staco_tracktheta)
 		self.Tree1.Branch('mu_staco_trackqoverp', self.mu_staco_trackqoverp)
 
-		self.Tree1.Branch('mu_staco_d0_exPV', self.mu_staco_d0_exPV)
-		self.Tree1.Branch('mu_staco_z0_exPV', self.mu_staco_z0_exPV)
-		self.Tree1.Branch('mu_staco_cov_d0_exPV', self.mu_staco_cov_d0_exPV)
-		self.Tree1.Branch('mu_staco_cov_z0_exPV', self.mu_staco_cov_z0_exPV)
+		self.Tree1.Branch('mu_staco_trackd0pvunbiased', self.mu_staco_trackd0pvunbiased)
+		self.Tree1.Branch('mu_staco_trackz0pvunbiased', self.mu_staco_trackz0pvunbiased)
+		self.Tree1.Branch('mu_staco_tracksigd0pvunbiased', self.mu_staco_tracksigd0pvunbiased)
+		self.Tree1.Branch('mu_staco_tracksigz0pvunbiased', self.mu_staco_tracksigz0pvunbiased)
 
 		self.Tree1.Branch('mu_staco_truth_type', self.mu_staco_truth_type)
 		self.Tree1.Branch('mu_staco_truth_mothertype', self.mu_staco_truth_mothertype)
@@ -570,6 +627,11 @@ class uD3PD(PyAthena.Alg):
 
 		self.EF_e15_medium = array.array('i', [0])
 		self.EF_e20_medium = array.array('i', [0])
+		self.EF_e20_medium1 = array.array('i', [0])
+		self.EF_2e12_medium = array.array('i', [0])
+
+		self.EF_2g20_loose = array.array('i', [0])
+
 		self.EF_mu10 = array.array('i', [0])
 		self.EF_mu10_MG = array.array('i', [0])
 		self.EF_mu13_MG = array.array('i', [0])
@@ -583,6 +645,11 @@ class uD3PD(PyAthena.Alg):
 
 		self.Tree2.Branch('EF_e15_medium'   , self.EF_e15_medium   , 'EF_e15_medium/I')
 		self.Tree2.Branch('EF_e20_medium'   , self.EF_e20_medium   , 'EF_e20_medium/I')
+		self.Tree2.Branch('EF_e20_medium1'  , self.EF_e20_medium1  , 'EF_e20_medium1/I')
+		self.Tree2.Branch('EF_2e12_medium'  , self.EF_2e12_medium  , 'EF_2e12_medium/I')
+
+		self.Tree2.Branch('EF_2g20_loose'   , self.EF_2g20_loose   , 'EF_2g20_loose/I')
+
 		self.Tree2.Branch('EF_mu10'         , self.EF_mu10         , 'EF_mu10/I')
 		self.Tree2.Branch('EF_mu10_MG'      , self.EF_mu10_MG      , 'EF_mu10_MG/I')
 		self.Tree2.Branch('EF_mu13_MG'      , self.EF_mu13_MG      , 'EF_mu13_MG/I')
@@ -606,6 +673,10 @@ class uD3PD(PyAthena.Alg):
 
 		self.vxp_n[0] = 0
 
+		self.vxp_x.clear()
+		self.vxp_y.clear()
+		self.vxp_z.clear()
+
 		self.vxp_nTracks.clear()
 
 		#########################
@@ -622,6 +693,7 @@ class uD3PD(PyAthena.Alg):
 		self.el_charge.clear()
 		self.el_author.clear()
 		self.el_isEM.clear()
+		self.el_OQ.clear()
 
 		self.el_cl_E.clear()
 		self.el_cl_pt.clear()
@@ -650,6 +722,11 @@ class uD3PD(PyAthena.Alg):
 		self.el_Etcone20_pt_corrected.clear()
 		self.el_Etcone30_pt_corrected.clear()
 		self.el_Etcone40_pt_corrected.clear()
+
+		self.el_nBLHits.clear()
+		self.el_nPixHits.clear()
+		self.el_nSCTHits.clear()
+		self.el_nTRTHits.clear()
 
 		self.el_trackd0.clear()
 		self.el_trackz0.clear()
@@ -686,6 +763,10 @@ class uD3PD(PyAthena.Alg):
 		self.mu_muid_charge.clear()
 		self.mu_muid_author.clear()
 
+		self.mu_muid_loose.clear()
+		self.mu_muid_medium.clear()
+		self.mu_muid_tight.clear()
+
 		self.mu_muid_ptcone20.clear()
 		self.mu_muid_ptcone30.clear()
 		self.mu_muid_ptcone40.clear()
@@ -694,16 +775,21 @@ class uD3PD(PyAthena.Alg):
 		self.mu_muid_etcone30.clear()
 		self.mu_muid_etcone40.clear()
 
+		self.mu_muid_nBLHits.clear()
+		self.mu_muid_nPixHits.clear()
+		self.mu_muid_nSCTHits.clear()
+		self.mu_muid_nTRTHits.clear()
+
 		self.mu_muid_trackd0.clear()
 		self.mu_muid_trackz0.clear()
 		self.mu_muid_trackphi.clear()
 		self.mu_muid_tracktheta.clear()
 		self.mu_muid_trackqoverp.clear()
 
-		self.mu_muid_d0_exPV.clear()
-		self.mu_muid_z0_exPV.clear()
-		self.mu_muid_cov_d0_exPV.clear()
-		self.mu_muid_cov_z0_exPV.clear()
+		self.mu_muid_trackd0pvunbiased.clear()
+		self.mu_muid_trackz0pvunbiased.clear()
+		self.mu_muid_tracksigd0pvunbiased.clear()
+		self.mu_muid_tracksigz0pvunbiased.clear()
 
 		self.mu_muid_truth_type.clear()
 		self.mu_muid_truth_barbode.clear()
@@ -724,6 +810,10 @@ class uD3PD(PyAthena.Alg):
 		self.mu_staco_charge.clear()
 		self.mu_staco_author.clear()
 
+		self.mu_staco_loose.clear()
+		self.mu_staco_medium.clear()
+		self.mu_staco_tight.clear()
+
 		self.mu_staco_ptcone20.clear()
 		self.mu_staco_ptcone30.clear()
 		self.mu_staco_ptcone40.clear()
@@ -732,16 +822,21 @@ class uD3PD(PyAthena.Alg):
 		self.mu_staco_etcone30.clear()
 		self.mu_staco_etcone40.clear()
 
+		self.mu_staco_nBLHits.clear()
+		self.mu_staco_nPixHits.clear()
+		self.mu_staco_nSCTHits.clear()
+		self.mu_staco_nTRTHits.clear()
+
 		self.mu_staco_trackd0.clear()
 		self.mu_staco_trackz0.clear()
 		self.mu_staco_trackphi.clear()
 		self.mu_staco_tracktheta.clear()
 		self.mu_staco_trackqoverp.clear()
 
-		self.mu_staco_d0_exPV.clear()
-		self.mu_staco_z0_exPV.clear()
-		self.mu_staco_cov_d0_exPV.clear()
-		self.mu_staco_cov_z0_exPV.clear()
+		self.mu_staco_trackd0pvunbiased.clear()
+		self.mu_staco_trackz0pvunbiased.clear()
+		self.mu_staco_tracksigd0pvunbiased.clear()
+		self.mu_staco_tracksigz0pvunbiased.clear()
 
 		self.mu_staco_truth_type.clear()
 		self.mu_staco_truth_barbode.clear()
@@ -757,6 +852,11 @@ class uD3PD(PyAthena.Alg):
 
 		self.EF_e15_medium[0] = 0
 		self.EF_e20_medium[0] = 0
+		self.EF_e20_medium1[0] = 0
+		self.EF_2e12_medium[0] = 0
+
+		self.EF_2g20_loose[0] = 0
+
 		self.EF_mu10[0] = 0
 		self.EF_mu10_MG[0] = 0
 		self.EF_mu13_MG[0] = 0
@@ -803,6 +903,10 @@ class uD3PD(PyAthena.Alg):
 		#############################################################
 
 		for vertex in vertices:
+			self.vxp_x.push_back(vertex.recVertex().position().x())
+			self.vxp_y.push_back(vertex.recVertex().position().y())
+			self.vxp_z.push_back(vertex.recVertex().position().z())
+
 			self.vxp_nTracks.push_back(len(vertex.vxTrackAtVertex()))
 
 			##
@@ -835,17 +939,24 @@ class uD3PD(PyAthena.Alg):
 				tight = False
 
 				if electron.author() == 8:
-					if (isEM2 & PyAthena.egammaPID.frwdElectronLoose) == 0:
+					if electron.isElectron(PyAthena.egammaPID.frwdElectronLoose):
 						loose = True
-					if (isEM2 & PyAthena.egammaPID.frwdElectronTight) == 0:
+					if electron.isElectron(PyAthena.egammaPID.frwdElectronTight):
 						tight = True
 				else:
-					if (isEM2 & PyAthena.egammaPID.ElectronLoose) == 0:
+					if electron.isElectron(PyAthena.egammaPID.ElectronLoose):
 						loose = True
-					if (isEM2 & PyAthena.egammaPID.ElectronMedium) == 0:
+					if electron.isElectron(PyAthena.egammaPID.ElectronMedium):
 						medium = True
-					if (isEM2 & PyAthena.egammaPID.ElectronTight) == 0:
+					if electron.isElectron(PyAthena.egammaPID.ElectronTight):
 						tight = True
+
+				##
+
+				if electron.isgoodoq(PyAthena.egammaPID.BADCLUSELECTRON) == 0:
+					OQ = 0x00000000000000000000000000000000
+				else:
+					OQ = PyAthena.egammaPID.BADCLUSELECTRON
 
 				##
 
@@ -893,9 +1004,9 @@ class uD3PD(PyAthena.Alg):
 					cl_eta = cluster.eta()
 					cl_phi = cluster.phi()
 
-					Es2 = cluster.energyBE(2)
-					etas2 = cluster.etaBE(2)
-					phis2 = cluster.phiBE(2)
+					cl_Es2 = cluster.energyBE(2)
+					cl_etas2 = cluster.etaBE(2)
+					cl_phis2 = cluster.phiBE(2)
 
 				else:
 					continue
@@ -905,6 +1016,16 @@ class uD3PD(PyAthena.Alg):
 				track = electron.trackParticle()
 
 				if track:
+					summary = track.trackSummary()
+
+					if summary:
+						nBLHits = summary.get(ROOT.Trk.numberOfBLayerHits)
+						nPixHits = summary.get(ROOT.Trk.numberOfPixelHits)
+						nSCTHits = summary.get(ROOT.Trk.numberOfSCTHits)
+						nTRTHits = summary.get(ROOT.Trk.numberOfTRTHits)
+					else:
+						continue
+
 					perigee = track.measuredPerigee()
 
 					if perigee:
@@ -969,15 +1090,16 @@ class uD3PD(PyAthena.Alg):
 				self.el_charge.push_back(charge)
 				self.el_author.push_back(author)
 				self.el_isEM.push_back(isEM1)
+				self.el_OQ.push_back(OQ)
 
 				self.el_cl_E.push_back(cl_E)
 				self.el_cl_pt.push_back(cl_pt)
 				self.el_cl_eta.push_back(cl_eta)
 				self.el_cl_phi.push_back(cl_phi)
 
-				self.el_Es2.push_back(Es2)
-				self.el_etas2.push_back(etas2)
-				self.el_phis2.push_back(phis2)
+				self.el_Es2.push_back(cl_Es2)
+				self.el_etas2.push_back(cl_etas2)
+				self.el_phis2.push_back(cl_phis2)
 
 				self.el_loose.push_back(loose)
 				self.el_medium.push_back(medium)
@@ -997,6 +1119,11 @@ class uD3PD(PyAthena.Alg):
 				self.el_Etcone20_pt_corrected.push_back(Etcone20_pt_corrected)
 				self.el_Etcone30_pt_corrected.push_back(Etcone30_pt_corrected)
 				self.el_Etcone40_pt_corrected.push_back(Etcone40_pt_corrected)
+
+				self.el_nBLHits.push_back(nBLHits)
+				self.el_nPixHits.push_back(nPixHits)
+				self.el_nSCTHits.push_back(nSCTHits)
+				self.el_nTRTHits.push_back(nTRTHits)
 
 				self.el_trackd0.push_back(trackd0)
 				self.el_trackz0.push_back(trackz0)
@@ -1045,6 +1172,12 @@ class uD3PD(PyAthena.Alg):
 
 				##
 
+				loose = muon.isLoose()
+				medium = muon.isMedium()
+				tight = muon.isTight()
+
+				##
+
 				ptcone20 = muon.parameter(PyAthena.MuonParameters.ptcone20)
 				ptcone30 = muon.parameter(PyAthena.MuonParameters.ptcone30)
 				ptcone40 = muon.parameter(PyAthena.MuonParameters.ptcone40)
@@ -1058,6 +1191,16 @@ class uD3PD(PyAthena.Alg):
 				track = muon.track()
 
 				if track:
+					summary = track.trackSummary()
+
+					if summary:
+						nBLHits = summary.get(ROOT.Trk.numberOfBLayerHits)
+						nPixHits = summary.get(ROOT.Trk.numberOfPixelHits)
+						nSCTHits = summary.get(ROOT.Trk.numberOfSCTHits)
+						nTRTHits = summary.get(ROOT.Trk.numberOfTRTHits)
+					else:
+						continue
+
 					perigee = track.measuredPerigee()
 
 					if perigee:
@@ -1071,11 +1214,11 @@ class uD3PD(PyAthena.Alg):
 
 					r = self.TrackToVertexIPEstimator.estimate(track, vertices[0], True)
 
-					d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
-					z0_exPV = ROOT.Trk.ImpactParametersAndSigma__getZ0(r)
+					trackd0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
+					trackz0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getZ0(r)
 
-					cov_d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getSigmaD0(r)
-					cov_z0_exPV = ROOT.Trk.ImpactParametersAndSigma__getSigmaZ0(r)
+					tracksigd0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getSigmaD0(r)
+					tracksigz0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getSigmaZ0(r)
 
 				else:
 					continue
@@ -1104,6 +1247,10 @@ class uD3PD(PyAthena.Alg):
 				self.mu_muid_charge.push_back(charge)
 				self.mu_muid_author.push_back(author)
 
+				self.mu_muid_loose.push_back(loose)
+				self.mu_muid_medium.push_back(medium)
+				self.mu_muid_tight.push_back(tight)
+
 				self.mu_muid_ptcone20.push_back(ptcone20)
 				self.mu_muid_ptcone30.push_back(ptcone30)
 				self.mu_muid_ptcone40.push_back(ptcone40)
@@ -1112,16 +1259,21 @@ class uD3PD(PyAthena.Alg):
 				self.mu_muid_etcone30.push_back(Etcone30)
 				self.mu_muid_etcone40.push_back(Etcone40)
 
+				self.mu_muid_nBLHits.push_back(nBLHits)
+				self.mu_muid_nPixHits.push_back(nPixHits)
+				self.mu_muid_nSCTHits.push_back(nSCTHits)
+				self.mu_muid_nTRTHits.push_back(nTRTHits)
+
 				self.mu_muid_trackd0.push_back(trackd0)
 				self.mu_muid_trackz0.push_back(trackz0)
 				self.mu_muid_trackphi.push_back(trackphi)
 				self.mu_muid_tracktheta.push_back(tracktheta)
 				self.mu_muid_trackqoverp.push_back(trackqoverp)
 
-				self.mu_muid_d0_exPV.push_back(d0_exPV)
-				self.mu_muid_z0_exPV.push_back(z0_exPV)
-				self.mu_muid_cov_d0_exPV.push_back(cov_d0_exPV)
-				self.mu_muid_cov_z0_exPV.push_back(cov_z0_exPV)
+				self.mu_muid_trackd0pvunbiased.push_back(trackd0pvunbiased)
+				self.mu_muid_trackz0pvunbiased.push_back(trackz0pvunbiased)
+				self.mu_muid_tracksigd0pvunbiased.push_back(tracksigd0pvunbiased)
+				self.mu_muid_tracksigz0pvunbiased.push_back(tracksigz0pvunbiased)
 
 				self.mu_muid_truth_type.push_back(truth_type)
 				self.mu_muid_truth_barbode.push_back(truth_barbode)
@@ -1153,6 +1305,12 @@ class uD3PD(PyAthena.Alg):
 
 				##
 
+				loose = muon.isLoose()
+				medium = muon.isMedium()
+				tight = muon.isTight()
+
+				##
+
 				ptcone20 = muon.parameter(PyAthena.MuonParameters.ptcone20)
 				ptcone30 = muon.parameter(PyAthena.MuonParameters.ptcone30)
 				ptcone40 = muon.parameter(PyAthena.MuonParameters.ptcone40)
@@ -1166,6 +1324,16 @@ class uD3PD(PyAthena.Alg):
 				track = muon.track()
 
 				if track:
+					summary = track.trackSummary()
+
+					if summary:
+						nBLHits = summary.get(ROOT.Trk.numberOfBLayerHits)
+						nPixHits = summary.get(ROOT.Trk.numberOfPixelHits)
+						nSCTHits = summary.get(ROOT.Trk.numberOfSCTHits)
+						nTRTHits = summary.get(ROOT.Trk.numberOfTRTHits)
+					else:
+						continue
+
 					perigee = track.measuredPerigee()
 
 					if perigee:
@@ -1179,11 +1347,11 @@ class uD3PD(PyAthena.Alg):
 
 					r = self.TrackToVertexIPEstimator.estimate(track, vertices[0], True)
 
-					d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
-					z0_exPV = ROOT.Trk.ImpactParametersAndSigma__getZ0(r)
+					trackd0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
+					trackz0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getZ0(r)
 
-					cov_d0_exPV = ROOT.Trk.ImpactParametersAndSigma__getSigmaD0(r)
-					cov_z0_exPV = ROOT.Trk.ImpactParametersAndSigma__getSigmaZ0(r)
+					tracksigd0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getSigmaD0(r)
+					tracksigz0pvunbiased = ROOT.Trk.ImpactParametersAndSigma__getSigmaZ0(r)
 
 				else:
 					continue
@@ -1212,6 +1380,10 @@ class uD3PD(PyAthena.Alg):
 				self.mu_staco_charge.push_back(charge)
 				self.mu_staco_author.push_back(author)
 
+				self.mu_staco_loose.push_back(loose)
+				self.mu_staco_medium.push_back(medium)
+				self.mu_staco_tight.push_back(tight)
+
 				self.mu_staco_ptcone20.push_back(ptcone20)
 				self.mu_staco_ptcone30.push_back(ptcone30)
 				self.mu_staco_ptcone40.push_back(ptcone40)
@@ -1220,16 +1392,21 @@ class uD3PD(PyAthena.Alg):
 				self.mu_staco_etcone30.push_back(Etcone30)
 				self.mu_staco_etcone40.push_back(Etcone40)
 
+				self.mu_staco_nBLHits.push_back(nBLHits)
+				self.mu_staco_nPixHits.push_back(nPixHits)
+				self.mu_staco_nSCTHits.push_back(nSCTHits)
+				self.mu_staco_nTRTHits.push_back(nTRTHits)
+
 				self.mu_staco_trackd0.push_back(trackd0)
 				self.mu_staco_trackz0.push_back(trackz0)
 				self.mu_staco_trackphi.push_back(trackphi)
 				self.mu_staco_tracktheta.push_back(tracktheta)
 				self.mu_staco_trackqoverp.push_back(trackqoverp)
 
-				self.mu_staco_d0_exPV.push_back(d0_exPV)
-				self.mu_staco_z0_exPV.push_back(z0_exPV)
-				self.mu_staco_cov_d0_exPV.push_back(cov_d0_exPV)
-				self.mu_staco_cov_z0_exPV.push_back(cov_z0_exPV)
+				self.mu_staco_trackd0pvunbiased.push_back(trackd0pvunbiased)
+				self.mu_staco_trackz0pvunbiased.push_back(trackz0pvunbiased)
+				self.mu_staco_tracksigd0pvunbiased.push_back(tracksigd0pvunbiased)
+				self.mu_staco_tracksigz0pvunbiased.push_back(tracksigz0pvunbiased)
 
 				self.mu_staco_truth_type.push_back(truth_type)
 				self.mu_staco_truth_barbode.push_back(truth_barbode)
@@ -1261,6 +1438,8 @@ class uD3PD(PyAthena.Alg):
 			if ctp_item == 'L1_MU10':
 				self.L1_MU10[0] = 1
 
+		##
+
 		if self.TrigDecisionTool.getChainGroup('EF_e15_medium').isPassed():
 			self.EF_e15_medium[0] = 1
 		else:
@@ -1270,6 +1449,25 @@ class uD3PD(PyAthena.Alg):
 			self.EF_e20_medium[0] = 1
 		else:
 			self.EF_e20_medium[0] = 0
+
+		if self.TrigDecisionTool.getChainGroup('EF_e20_medium1').isPassed():
+			self.EF_e20_medium1[0] = 1
+		else:
+			self.EF_e20_medium1[0] = 0
+
+		if self.TrigDecisionTool.getChainGroup('EF_2e12_medium').isPassed():
+			self.EF_2e12_medium[0] = 1
+		else:
+			self.EF_2e12_medium[0] = 0
+
+		##
+
+		if self.TrigDecisionTool.getChainGroup('EF_2e12_medium').isPassed():
+			self.EF_2g20_loose[0] = 1
+		else:
+			self.EF_2g20_loose[0] = 0
+
+		##
 
 		if self.TrigDecisionTool.getChainGroup('EF_mu10').isPassed():
 			self.EF_mu10[0] = 1
