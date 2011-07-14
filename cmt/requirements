@@ -10,11 +10,15 @@ use GaudiInterface		GaudiInterface-*		External
 use TrkVertexFitterInterfaces	TrkVertexFitterInterfaces-*	Tracking/TrkVertexFitter
 
 #############################################################################
+library uD3PD *.cxx
+
+apply_pattern installed_library
+#############################################################################
 
 private
 
 use AtlasReflex AtlasReflex-* External -no_auto_imports
- 
+
 apply_pattern lcgdict dict=uD3PD selectionfile=selection.xml headerfiles="../uD3PD/uD3PD.h"
  
 end_private
