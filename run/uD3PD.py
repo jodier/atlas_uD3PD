@@ -2,12 +2,15 @@
 # USER OPTIONS								    #
 #############################################################################
 
-AtlGeo = 'ATLAS-GEO-16-00-00'
-CondDB = 'OFLCOND-SDR-BS7T-04-13'
+#AtlGeo = 'ATLAS-GEO-16-00-00'
+#CondDB = 'OFLCOND-SDR-BS7T-04-13'
+
+AtlGeo = 'ATLAS-GEO-16-00-01'
+CondDB = 'COMCOND-BLKPST-004-07'
 
 #############################################################################
 
-isMC = True
+isMC = False
 
 isEGamma = False
 
@@ -16,7 +19,8 @@ InputFormat = 'AOD'
 #############################################################################
 
 InputFiles = [
-	'../../AOD.280342._000152.pool.root'
+#	'../../AOD.280342._000152.pool.root'
+	'/tmp/jodier/DAOD_HSG2.384735._000027.pool.root'
 ]
 
 OutputFile = 'output.root'
@@ -858,32 +862,17 @@ class uD3PD(PyAthena.Alg):
 		# TRIGGERS		#
 		#########################
 
-		self.L1_EM14 = array.array('i', [False])
-		self.L1_MU10 = array.array('i', [False])
-
 		self.EF_e60_loose = array.array('i', [False])
 		self.EF_e20_medium = array.array('i', [False])
-		self.EF_e20_medium1 = array.array('i', [False])
-		self.EF_e22_medium1 = array.array('i', [False])
 		self.EF_e10_medium_mu6 = array.array('i', [False])
 		self.EF_e10_medium_mu10 = array.array('i', [False])
 
 		self.EF_2e10_medium = array.array('i', [False])
 		self.EF_2e12_medium = array.array('i', [False])
-		self.EF_2e15_medium = array.array('i', [False])
-		self.EF_2e20_medium = array.array('i', [False])
 
 		self.EF_2g15_loose = array.array('i', [False])
 		self.EF_2g20_loose = array.array('i', [False])
 
-		self.EF_2g15_loose_SiTrk_Z30 = array.array('i', [False])
-		self.EF_2g20_loose_SiTrk_Z30 = array.array('i', [False])
-
-		self.EF_2g15_loose1_Z30 = array.array('i', [False])
-		self.EF_2g20_loose1_Z30 = array.array('i', [False])
-
-		self.EF_mu13 = array.array('i', [False])
-		self.EF_mu13_MG = array.array('i', [False])
 		self.EF_mu18 = array.array('i', [False])
 		self.EF_mu18_MG = array.array('i', [False])
 		self.EF_mu20 = array.array('i', [False])
@@ -900,32 +889,17 @@ class uD3PD(PyAthena.Alg):
 
 		##
 
-		self.Tree2.Branch('L1_EM14', self.L1_EM14, 'L1_EM14/O')
-		self.Tree2.Branch('L1_MU10', self.L1_MU10, 'L1_MU10/O')
-
 		self.Tree2.Branch('EF_e60_loose', self.EF_e60_loose, 'EF_e60_loose/O')
 		self.Tree2.Branch('EF_e20_medium', self.EF_e20_medium, 'EF_e20_medium/O')
-		self.Tree2.Branch('EF_e20_medium1', self.EF_e20_medium1, 'EF_e20_medium1/O')
-		self.Tree2.Branch('EF_e22_medium1', self.EF_e22_medium1, 'EF_e22_medium1/O')
 		self.Tree2.Branch('EF_e10_medium_mu6', self.EF_e10_medium_mu6, 'EF_e10_medium_mu6/O')
 		self.Tree2.Branch('EF_e10_medium_mu10', self.EF_e10_medium_mu10, 'EF_e10_medium_mu10/O')
 
 		self.Tree2.Branch('EF_2e10_medium', self.EF_2e10_medium, 'EF_2e10_medium/O')
 		self.Tree2.Branch('EF_2e12_medium', self.EF_2e12_medium, 'EF_2e12_medium/O')
-		self.Tree2.Branch('EF_2e15_medium', self.EF_2e15_medium, 'EF_2e15_medium/O')
-		self.Tree2.Branch('EF_2e20_medium', self.EF_2e20_medium, 'EF_2e20_medium/O')
 
 		self.Tree2.Branch('EF_2g15_loose', self.EF_2g15_loose, 'EF_2g15_loose/O')
 		self.Tree2.Branch('EF_2g20_loose', self.EF_2g20_loose, 'EF_2g20_loose/O')
 
-		self.Tree2.Branch('EF_2g15_loose_SiTrk_Z30', self.EF_2g15_loose_SiTrk_Z30, 'EF_2g15_loose_SiTrk_Z30/O')
-		self.Tree2.Branch('EF_2g20_loose_SiTrk_Z30', self.EF_2g20_loose_SiTrk_Z30, 'EF_2g20_loose_SiTrk_Z30/O')
-
-		self.Tree2.Branch('EF_2g15_loose1_Z30', self.EF_2g15_loose1_Z30, 'EF_2g15_loose1_Z30/O')
-		self.Tree2.Branch('EF_2g20_loose1_Z30', self.EF_2g20_loose1_Z30, 'EF_2g20_loose1_Z30/O')
-
-		self.Tree2.Branch('EF_mu13', self.EF_mu13, 'EF_mu13/O')
-		self.Tree2.Branch('EF_mu13_MG', self.EF_mu13_MG, 'EF_mu13_MG/O')
 		self.Tree2.Branch('EF_mu18', self.EF_mu18, 'EF_mu18/O')
 		self.Tree2.Branch('EF_mu18_MG', self.EF_mu18_MG, 'EF_mu18_MG/O')
 		self.Tree2.Branch('EF_mu20', self.EF_mu20, 'EF_mu20/O')
@@ -951,24 +925,14 @@ class uD3PD(PyAthena.Alg):
 
 		self.trig_EF_el_EF_e60_loose = ROOT.std.vector(int)()
 		self.trig_EF_el_EF_e20_medium = ROOT.std.vector(int)()
-		self.trig_EF_el_EF_e20_medium1 = ROOT.std.vector(int)()
-		self.trig_EF_el_EF_e22_medium1 = ROOT.std.vector(int)()
 		self.trig_EF_el_EF_e10_medium_mu6 = ROOT.std.vector(int)()
 		self.trig_EF_el_EF_e10_medium_mu10 = ROOT.std.vector(int)()
 
 		self.trig_EF_el_EF_2e10_medium = ROOT.std.vector(int)()
 		self.trig_EF_el_EF_2e12_medium = ROOT.std.vector(int)()
-		self.trig_EF_el_EF_2e15_medium = ROOT.std.vector(int)()
-		self.trig_EF_el_EF_2e20_medium = ROOT.std.vector(int)()
 
 		self.trig_EF_el_EF_2g15_loose = ROOT.std.vector(int)()
 		self.trig_EF_el_EF_2g20_loose = ROOT.std.vector(int)()
-
-		self.trig_EF_el_EF_2g15_loose_SiTrk_Z30 = ROOT.std.vector(int)()
-		self.trig_EF_el_EF_2g20_loose_SiTrk_Z30 = ROOT.std.vector(int)()
-
-		self.trig_EF_el_EF_2g15_loose1_Z30 = ROOT.std.vector(int)()
-		self.trig_EF_el_EF_2g20_loose1_Z30 = ROOT.std.vector(int)()
 
 		##
 
@@ -979,24 +943,14 @@ class uD3PD(PyAthena.Alg):
 
 		self.Tree2.Branch('trig_EF_el_EF_e60_loose', self.trig_EF_el_EF_e60_loose)
 		self.Tree2.Branch('trig_EF_el_EF_e20_medium', self.trig_EF_el_EF_e20_medium)
-		self.Tree2.Branch('trig_EF_el_EF_e20_medium1', self.trig_EF_el_EF_e20_medium1)
-		self.Tree2.Branch('trig_EF_el_EF_e22_medium1', self.trig_EF_el_EF_e22_medium1)
 		self.Tree2.Branch('trig_EF_el_EF_e10_medium_mu6', self.trig_EF_el_EF_e10_medium_mu6)
 		self.Tree2.Branch('trig_EF_el_EF_e10_medium_mu10', self.trig_EF_el_EF_e10_medium_mu10)
 
 		self.Tree2.Branch('trig_EF_el_EF_2e10_medium', self.trig_EF_el_EF_2e10_medium)
 		self.Tree2.Branch('trig_EF_el_EF_2e12_medium', self.trig_EF_el_EF_2e12_medium)
-		self.Tree2.Branch('trig_EF_el_EF_2e15_medium', self.trig_EF_el_EF_2e15_medium)
-		self.Tree2.Branch('trig_EF_el_EF_2e20_medium', self.trig_EF_el_EF_2e20_medium)
 
 		self.Tree2.Branch('trig_EF_el_EF_2g15_loose', self.trig_EF_el_EF_2g15_loose)
 		self.Tree2.Branch('trig_EF_el_EF_2g20_loose', self.trig_EF_el_EF_2g20_loose)
-
-		self.Tree2.Branch('trig_EF_el_EF_2g15_loose_SiTrk_Z30', self.trig_EF_el_EF_2g15_loose_SiTrk_Z30)
-		self.Tree2.Branch('trig_EF_el_EF_2g20_loose_SiTrk_Z30', self.trig_EF_el_EF_2g20_loose_SiTrk_Z30)
-
-		self.Tree2.Branch('trig_EF_el_EF_2g15_loose1_Z30', self.trig_EF_el_EF_2g15_loose1_Z30)
-		self.Tree2.Branch('trig_EF_el_EF_2g20_loose1_Z30', self.trig_EF_el_EF_2g20_loose1_Z30)
 
 		#########################
 		# TRIGGER MUONS		#
@@ -1004,8 +958,6 @@ class uD3PD(PyAthena.Alg):
 
 		self.trig_EF_trigmuonef_n = array.array('i', [0])
 
-		self.trig_EF_trigmuonef_EF_mu13 = ROOT.std.vector(int)()
-		self.trig_EF_trigmuonef_EF_mu13_MG = ROOT.std.vector(int)()
 		self.trig_EF_trigmuonef_EF_mu18 = ROOT.std.vector(int)()
 		self.trig_EF_trigmuonef_EF_mu18_MG = ROOT.std.vector(int)()
 		self.trig_EF_trigmuonef_EF_mu20 = ROOT.std.vector(int)()
@@ -1022,8 +974,6 @@ class uD3PD(PyAthena.Alg):
 
 		self.Tree2.Branch('trig_EF_trigmuonef_n', self.trig_EF_trigmuonef_n, 'trig_EF_trigmuonef_n/I')
 
-		self.Tree2.Branch('trig_EF_trigmuonef_EF_mu13', self.trig_EF_trigmuonef_EF_mu13)
-		self.Tree2.Branch('trig_EF_trigmuonef_EF_mu13_MG', self.trig_EF_trigmuonef_EF_mu13_MG)
 		self.Tree2.Branch('trig_EF_trigmuonef_EF_mu18', self.trig_EF_trigmuonef_EF_mu18)
 		self.Tree2.Branch('trig_EF_trigmuonef_EF_mu18_MG', self.trig_EF_trigmuonef_EF_mu18_MG)
 		self.Tree2.Branch('trig_EF_trigmuonef_EF_mu20', self.trig_EF_trigmuonef_EF_mu20)
@@ -1305,34 +1255,19 @@ class uD3PD(PyAthena.Alg):
 		# TRIGGERS		#
 		#########################
 
-		self.L1_EM14[0] = False
-		self.L1_MU10[0] = False
-
 		self.EF_e60_loose[0] = False
 		self.EF_e20_medium[0] = False
-		self.EF_e20_medium1[0] = False
-		self.EF_e22_medium1[0] = False
 		self.EF_e10_medium_mu6[0] = False
 		self.EF_e10_medium_mu10[0] = False
 
 		self.EF_2e10_medium[0] = False
 		self.EF_2e12_medium[0] = False
-		self.EF_2e15_medium[0] = False
-		self.EF_2e20_medium[0] = False
 
 		self.EF_2g15_loose[0] = False
 		self.EF_2g20_loose[0] = False
 
-		self.EF_2g15_loose_SiTrk_Z30[0] = False
-		self.EF_2g20_loose_SiTrk_Z30[0] = False
-
-		self.EF_2g15_loose1_Z30[0] = False
-		self.EF_2g20_loose1_Z30[0] = False
-
 		##
 
-		self.EF_mu13[0] = False
-		self.EF_mu13_MG[0] = False
 		self.EF_mu18[0] = False
 		self.EF_mu18_MG[0] = False
 		self.EF_mu20[0] = False
@@ -1358,24 +1293,14 @@ class uD3PD(PyAthena.Alg):
 
 		self.trig_EF_el_EF_e60_loose.clear()
 		self.trig_EF_el_EF_e20_medium.clear()
-		self.trig_EF_el_EF_e20_medium1.clear()
-		self.trig_EF_el_EF_e22_medium1.clear()
 		self.trig_EF_el_EF_e10_medium_mu6.clear()
 		self.trig_EF_el_EF_e10_medium_mu10.clear()
 
 		self.trig_EF_el_EF_2e10_medium.clear()
 		self.trig_EF_el_EF_2e12_medium.clear()
-		self.trig_EF_el_EF_2e15_medium.clear()
-		self.trig_EF_el_EF_2e20_medium.clear()
 
 		self.trig_EF_el_EF_2g15_loose.clear()
 		self.trig_EF_el_EF_2g20_loose.clear()
-
-		self.trig_EF_el_EF_2g15_loose_SiTrk_Z30.clear()
-		self.trig_EF_el_EF_2g20_loose_SiTrk_Z30.clear()
-
-		self.trig_EF_el_EF_2g15_loose1_Z30.clear()
-		self.trig_EF_el_EF_2g20_loose1_Z30.clear()
 
 		#########################
 		# TRIGGER MUONS		#
@@ -1383,8 +1308,6 @@ class uD3PD(PyAthena.Alg):
 
 		self.trig_EF_trigmuonef_n[0] = 0
 
-		self.trig_EF_trigmuonef_EF_mu13.clear()
-		self.trig_EF_trigmuonef_EF_mu13_MG.clear()
 		self.trig_EF_trigmuonef_EF_mu18.clear()
 		self.trig_EF_trigmuonef_EF_mu18_MG.clear()
 		self.trig_EF_trigmuonef_EF_mu20.clear()
@@ -2184,247 +2107,6 @@ class uD3PD(PyAthena.Alg):
 		# TRIGGERS						    #
 		#############################################################
 
-		ctp = self.StoreGateSvc['CTP_Decision']
-
-		ctp_items = ctp.getItems()
-
-		#############################################################
-
-		HLT_electrons = self.StoreGateSvc['HLT_egamma_Electrons']
-
-		#############################################################
-
-		L_e20_medium = []
-		L_2e12_medium = []
-		L_2g15_loose = []
-		L_2g20_loose = []
-
-		for electron in HLT_electrons:
-			eta = electron.eta()
-			phi = electron.phi()
-
-			L_e20_medium.append(self.isFlagged(eta, phi, 'EF_e20_medium'))
-			L_2e12_medium.append(self.isFlagged(eta, phi, 'EF_2e12_medium'))
-			L_2g15_loose.append(self.isFlagged(eta, phi, 'EF_2g15_loose'))
-			L_2g20_loose.append(self.isFlagged(eta, phi, 'EF_2g20_loose'))
-
-		#############################################################
-
-		e1 = ROOT.TLorentzVector()
-		e2 = ROOT.TLorentzVector()
-
-		simu_EF_e20_medium1 = set()
-		simu_EF_e22_medium1 = set()
-
-		simu_EF_2e15_medium = set()
-		simu_EF_2e20_medium = set()
-
-		simu_EF_2g15_loose_SiTrk_Z30 = set()
-		simu_EF_2g20_loose_SiTrk_Z30 = set()
-
-		simu_EF_2g15_loose1_Z30 = set()
-		simu_EF_2g20_loose1_Z30 = set()
-
-		for i in xrange(0 + 0, len(HLT_electrons)):
-			electron1 = HLT_electrons[i]
-
-			#####################################################
-			# EF_e22_medium1				    #
-			#####################################################
-
-			if L_e20_medium[i] != False:
-				index = particleMatching(
-					electron1.eta()
-					,
-					electron1.phi()
-					,
-					electrons
-				)[0]
-
-				if index >= 0 and self.isMediumPlusPlus(electrons[index]):
-
-					if electron1.e() > 20000.0:
-						simu_EF_e20_medium1.add(i)
-
-					if electron1.e() > 22000.0:
-						simu_EF_e22_medium1.add(i)
-
-			#####################################################
-
-			for j in xrange(i + 1, len(HLT_electrons)):
-				electron2 = HLT_electrons[j]
-
-				#############################################
-				# EF_2e15_medium			    #
-				#############################################
-
-				if L_2e12_medium[i] != False\
-				   and			    \
-				   L_2e12_medium[j] != False\
-				   and			  \
-				   electron1.e() > 15000.0\
-				   and			  \
-				   electron2.e() > 15000.0:
-					simu_EF_2e15_medium.add(i)
-					simu_EF_2e15_medium.add(j)
-
-				#############################################
-				# EF_2e20_medium			    #
-				#############################################
-
-				if L_2e12_medium[i] != False\
-				   and			    \
-				   L_2e12_medium[j] != False\
-				   and			  \
-				   electron1.e() > 20000.0\
-				   and			  \
-				   electron2.e() > 20000.0:
-					simu_EF_2e20_medium.add(i)
-					simu_EF_2e20_medium.add(j)
-
-				#############################################
-				# EF_2g15_loose_SiTrk_Z30		    #
-				##################################################################
-				# See SelectionDefElectron.ElectronLooseTrk in TrigEGammaPIDdefs #
-				##################################################################
-
-				if L_2g15_loose[i] != False\
-				   and			   \
-				   L_2g15_loose[j] != False:
-					e1.SetPtEtaPhiM(electron1.pt(), electron1.eta(), electron1.phi(), 0.510998910)
-					e2.SetPtEtaPhiM(electron2.pt(), electron2.eta(), electron2.phi(), 0.510998910)
-
-					Z = ROOT.TLorentzVector(
-						e1.Px() + e2.Px()
-						,
-						e1.Py() + e2.Py()
-						,
-						e1.Pz() + e2.Pz()
-						,
-						e1.T() + e2.T()
-					)
-
-					if Z.M() > 30000.0\
-					   and		  \
-					   electron1.isElectron(0x0016005D)\
-					   and				   \
-					   electron2.isElectron(0x0016005D):
-						simu_EF_2g15_loose_SiTrk_Z30.add(i)
-						simu_EF_2g15_loose_SiTrk_Z30.add(j)
-
-				#############################################
-				# EF_2g20_loose_SiTrk_Z30		    #
-				##################################################################
-				# See SelectionDefElectron.ElectronLooseTrk in TrigEGammaPIDdefs #
-				##################################################################
-
-				if L_2g20_loose[i] != False\
-				   and			   \
-				   L_2g20_loose[j] != False:
-					e1.SetPtEtaPhiM(electron1.pt(), electron1.eta(), electron1.phi(), 0.510998910)
-					e2.SetPtEtaPhiM(electron2.pt(), electron2.eta(), electron2.phi(), 0.510998910)
-
-					Z = ROOT.TLorentzVector(
-						e1.Px() + e2.Px()
-						,
-						e1.Py() + e2.Py()
-						,
-						e1.Pz() + e2.Pz()
-						,
-						e1.T() + e2.T()
-					)
-
-					if Z.M() > 30000.0\
-					   and		  \
-					   electron1.isElectron(0x0016005D)\
-					   and				   \
-					   electron2.isElectron(0x0016005D):
-						simu_EF_2g20_loose_SiTrk_Z30.add(i)
-						simu_EF_2g20_loose_SiTrk_Z30.add(j)
-
-				#############################################
-				# EF_2g15_loose1_Z30			    #
-				#############################################
-
-				if L_2g15_loose[i] != False\
-				   and			   \
-				   L_2g15_loose[j] != False:
-					e1.SetPtEtaPhiM(electron1.pt(), electron1.eta(), electron1.phi(), 0.510998910)
-					e2.SetPtEtaPhiM(electron2.pt(), electron2.eta(), electron2.phi(), 0.510998910)
-
-					Z = ROOT.TLorentzVector(
-						e1.Px() + e2.Px()
-						,
-						e1.Py() + e2.Py()
-						,
-						e1.Pz() + e2.Pz()
-						,
-						e1.T() + e2.T()
-					)
-
-					if Z.M() > 30000.0:
-						index1 = particleMatching(electron1.eta(), electron1.phi(), electrons)[0]
-						index2 = particleMatching(electron2.eta(), electron2.phi(), electrons)[0]
-
-						if index1 >= 0\
-						   and	      \
-						   index2 >= 0\
-						   and	      \
-						   self.isLoosePlusPlus(electrons[index1])\
-						   and					  \
-						   self.isLoosePlusPlus(electrons[index2]):
-							simu_EF_2g15_loose1_Z30.add(i)
-							simu_EF_2g15_loose1_Z30.add(j)
-
-				#############################################
-				# EF_2g20_loose1_Z30			    #
-				#############################################
-
-				if L_2g20_loose[i] != False\
-				   and			   \
-				   L_2g20_loose[j] != False:
-					e1.SetPtEtaPhiM(electron1.pt(), electron1.eta(), electron1.phi(), 0.510998910)
-					e2.SetPtEtaPhiM(electron2.pt(), electron2.eta(), electron2.phi(), 0.510998910)
-
-					Z = ROOT.TLorentzVector(
-						e1.Px() + e2.Px()
-						,
-						e1.Py() + e2.Py()
-						,
-						e1.Pz() + e2.Pz()
-						,
-						e1.T() + e2.T()
-					)
-
-					if Z.M() > 30000.0:
-						index1 = particleMatching(electron1.eta(), electron1.phi(), electrons)[0]
-						index2 = particleMatching(electron2.eta(), electron2.phi(), electrons)[0]
-
-						if index1 >= 0\
-						   and	      \
-						   index2 >= 0\
-						   and	      \
-						   self.isLoosePlusPlus(electrons[index1])\
-						   and					  \
-						   self.isLoosePlusPlus(electrons[index2]):
-							simu_EF_2g20_loose1_Z30.add(i)
-							simu_EF_2g20_loose1_Z30.add(j)
-
-		#############################################################
-
-		self.L1_EM14[0] = False
-		self.L1_MU10[0] = False
-
-		for ctp_item in ctp_items:
-
-			if ctp_item == 'L1_EM14':
-				self.L1_EM14[0] = True
-
-			if ctp_item == 'L1_MU10':
-				self.L1_MU10[0] = True
-
-		##
-
 		if self.TrigDecisionTool.getChainGroup('EF_e60_loose').isPassed():
 			self.EF_e60_loose[0] = True
 		else:
@@ -2434,9 +2116,6 @@ class uD3PD(PyAthena.Alg):
 			self.EF_e20_medium[0] = True
 		else:
 			self.EF_e20_medium[0] = False
-
-		self.EF_e20_medium1[0] = len(simu_EF_e20_medium1) > 0
-		self.EF_e22_medium1[0] = len(simu_EF_e22_medium1) > 0
 
 		if self.TrigDecisionTool.getChainGroup('EF_e10_medium_mu6').isPassed():
 			self.EF_e10_medium_mu6[0] = True
@@ -2460,9 +2139,6 @@ class uD3PD(PyAthena.Alg):
 		else:
 			self.EF_2e12_medium[0] = False
 
-		self.EF_2e15_medium[0] = len(simu_EF_2e15_medium) > 0
-		self.EF_2e20_medium[0] = len(simu_EF_2e20_medium) > 0
-
 		##
 
 		if self.TrigDecisionTool.getChainGroup('EF_2g15_loose').isPassed():
@@ -2475,23 +2151,7 @@ class uD3PD(PyAthena.Alg):
 		else:
 			self.EF_2g20_loose[0] = False
 
-		self.EF_2g15_loose_SiTrk_Z30[0] = len(simu_EF_2g15_loose_SiTrk_Z30) > 0
-		self.EF_2g20_loose_SiTrk_Z30[0] = len(simu_EF_2g20_loose_SiTrk_Z30) > 0
-
-		self.EF_2g15_loose1_Z30[0] = len(simu_EF_2g15_loose1_Z30) > 0
-		self.EF_2g20_loose1_Z30[0] = len(simu_EF_2g20_loose1_Z30) > 0
-
 		##
-
-		if self.TrigDecisionTool.getChainGroup('EF_mu13').isPassed():
-			self.EF_mu13[0] = True
-		else:
-			self.EF_mu13[0] = False
-
-		if self.TrigDecisionTool.getChainGroup('EF_mu13_MG').isPassed():
-			self.EF_mu13_MG[0] = True
-		else:
-			self.EF_mu13_MG[0] = False
 
 		if self.TrigDecisionTool.getChainGroup('EF_mu18').isPassed():
 			self.EF_mu18[0] = True
@@ -2551,8 +2211,6 @@ class uD3PD(PyAthena.Alg):
 
 		#############################################################
 
-		index = 0
-
 		for electron in electrons:
 			eta = electron.eta()
 			phi = electron.phi()
@@ -2562,29 +2220,17 @@ class uD3PD(PyAthena.Alg):
 
 			self.trig_EF_el_EF_e60_loose.push_back(self.isFlagged(eta, phi, 'EF_e60_loose'))
 			self.trig_EF_el_EF_e20_medium.push_back(self.isFlagged(eta, phi, 'EF_e20_medium'))
-			self.trig_EF_el_EF_e20_medium1.push_back(index in simu_EF_e20_medium1)
-			self.trig_EF_el_EF_e22_medium1.push_back(index in simu_EF_e22_medium1)
 			self.trig_EF_el_EF_e10_medium_mu6.push_back(self.isFlagged(eta, phi, 'EF_e10_medium_mu6'))
 			self.trig_EF_el_EF_e10_medium_mu10.push_back(self.isFlagged(eta, phi, 'EF_e10_medium_mu10'))
 
 			self.trig_EF_el_EF_2e10_medium.push_back(self.isFlagged(eta, phi, 'EF_2e10_medium'))
 			self.trig_EF_el_EF_2e12_medium.push_back(self.isFlagged(eta, phi, 'EF_2e12_medium'))
 
-			self.trig_EF_el_EF_2e15_medium.push_back(index in simu_EF_2e15_medium)
-			self.trig_EF_el_EF_2e20_medium.push_back(index in simu_EF_2e20_medium)
-
 			self.trig_EF_el_EF_2g15_loose.push_back(self.isFlagged(eta, phi, 'EF_2g15_loose'))
 			self.trig_EF_el_EF_2g20_loose.push_back(self.isFlagged(eta, phi, 'EF_2g20_loose'))
 
-			self.trig_EF_el_EF_2g15_loose_SiTrk_Z30.push_back(index in simu_EF_2g15_loose_SiTrk_Z30)
-			self.trig_EF_el_EF_2g20_loose_SiTrk_Z30.push_back(index in simu_EF_2g20_loose_SiTrk_Z30)
-
-			self.trig_EF_el_EF_2g15_loose1_Z30.push_back(index in simu_EF_2g15_loose1_Z30)
-			self.trig_EF_el_EF_2g20_loose1_Z30.push_back(index in simu_EF_2g20_loose1_Z30)
-
 			##
 
-			index += 1
 			self.trig_EF_el_n[0] += 1
 
 		#############################################################
@@ -2600,8 +2246,6 @@ class uD3PD(PyAthena.Alg):
 			phi = muon.ExtrapolatedTrack().phi()
 
 			if muon.hasExtrapolatedTrack():
-				self.trig_EF_trigmuonef_EF_mu13.push_back(self.isFlagged(eta, phi, 'EF_mu13'))
-				self.trig_EF_trigmuonef_EF_mu13_MG.push_back(self.isFlagged(eta, phi, 'EF_mu13_MG'))
 				self.trig_EF_trigmuonef_EF_mu18.push_back(self.isFlagged(eta, phi, 'EF_mu18'))
 				self.trig_EF_trigmuonef_EF_mu18_MG.push_back(self.isFlagged(eta, phi, 'EF_mu18_MG'))
 				self.trig_EF_trigmuonef_EF_mu20.push_back(self.isFlagged(eta, phi, 'EF_mu20'))
@@ -2614,8 +2258,6 @@ class uD3PD(PyAthena.Alg):
 				self.trig_EF_trigmuonef_EF_2mu10_loose.push_back(self.isFlagged(eta, phi, 'EF_2mu10_loose'))
 				self.trig_EF_trigmuonef_EF_mu15_mu10_EFFS.push_back(self.isFlagged(eta, phi, 'EF_mu15_mu10_EFFS'))
 			else:
-				self.trig_EF_trigmuonef_EF_mu13.push_back(False)
-				self.trig_EF_trigmuonef_EF_mu13_MG.push_back(False)
 				self.trig_EF_trigmuonef_EF_mu18.push_back(False)
 				self.trig_EF_trigmuonef_EF_mu18_MG.push_back(False)
 				self.trig_EF_trigmuonef_EF_mu20.push_back(False)
@@ -2649,214 +2291,12 @@ class uD3PD(PyAthena.Alg):
 
 #############################################################################
 
-	def isLoosePlusPlus(self, electron, isTrigger = False):
-
-		track = electron.trackParticle()
-		clust = electron.   cluster   ()
-
-		if not track\
-		   or	    \
-		   not clust:
-			return False
-
-		eta = math.fabs(clust.etaBE(2))
-
-		if isTrigger:
-			et = clust.et()
-		else:
-			et = clust.energy() / math.cosh(eta)
-
-		if et < 10000.0:
-			return False
-
-		##
-
-		rhad = electron.detailValue(ROOT.egammaParameters.ethad) / et
-		rhad1 = electron.detailValue(ROOT.egammaParameters.ethad1) / et
-
-		e237 = electron.detailValue(ROOT.egammaParameters.e237)
-		e277 = electron.detailValue(ROOT.egammaParameters.e277)
-
-		if e277 != 0.0:
-			reta = e237 / e277
-		else:
-			reta = 0.000000000
-
-		weta2 = electron.detailValue(ROOT.egammaParameters.weta2)
-		f1 = electron.detailValue(ROOT.egammaParameters.weta2)
-		wtots1 = electron.detailValue(ROOT.egammaParameters.wtots1)
-
-		emax = electron.detailValue(ROOT.egammaParameters.emaxs1)
-		emax2 = electron.detailValue(ROOT.egammaParameters.e2tsts1)
-
-		if (emax + emax2) != 0.0:
-			demaxs1 = (emax - emax2) / (emax + emax2)
-		else:
-			demaxs1 = 0.00000000000000000000000000000
-
-		deltaEta = electron.detailValue(ROOT.egammaParameters.deltaEta1)
-
-		##
-
-		summary = track.trackSummary()
-
-		if summary:
-			nSi = summary.get(ROOT.Trk.numberOfPixelHits)\
-			      +					     \
-			      summary.get(ROOT.Trk.numberOfSCTHits)
-		else:
-			nSi = 0
-
-		##
-
-		return ROOT.isLoosePlusPlus(
-			eta,
-			et,
-			rhad,
-			rhad1,
-			reta,
-			weta2,
-			f1,
-			wtots1,
-			demaxs1,
-			deltaEta,
-
-			nSi,
-
-			False, isTrigger
-		);
-
-#############################################################################
-
-	def isMediumPlusPlus(self, electron, isTrigger = False):
-
-		track = electron.trackParticle()
-		clust = electron.   cluster   ()
-
-		vertices = self.StoreGateSvc['VxPrimaryCandidate']
-
-		if not track	     \
-		   or		     \
-		   not clust	     \
-		   or		     \
-		   len(vertices) == 0:
-			return False
-
-		# RECONSTRUCTION #
-
-		r = self.TrackToVertexIPEstimator.estimate(track, vertices[0], True)
-
-		# RECONSTRUCTION #
-
-		eta = math.fabs(clust.etaBE(2))
-
-		if isTrigger:
-			et = clust.et()
-		else:
-			et = clust.energy() / math.cosh(eta)
-
-		if et < 10000.0:
-			return False
-
-		##
-
-		rhad = electron.detailValue(ROOT.egammaParameters.ethad) / et
-		rhad1 = electron.detailValue(ROOT.egammaParameters.ethad1) / et
-
-		e237 = electron.detailValue(ROOT.egammaParameters.e237)
-		e277 = electron.detailValue(ROOT.egammaParameters.e277)
-
-		if e277 != 0.0:
-			reta = e237 / e277
-		else:
-			reta = 0.000000000
-
-		weta2 = electron.detailValue(ROOT.egammaParameters.weta2)
-		f1 = electron.detailValue(ROOT.egammaParameters.weta2)
-		wtots1 = electron.detailValue(ROOT.egammaParameters.wtots1)
-
-		emax = electron.detailValue(ROOT.egammaParameters.emaxs1)
-		emax2 = electron.detailValue(ROOT.egammaParameters.e2tsts1)
-
-		if (emax + emax2) != 0.0:
-			demaxs1 = (emax - emax2) / (emax + emax2)
-		else:
-			demaxs1 = 0.00000000000000000000000000000
-
-		deltaEta = electron.detailValue(ROOT.egammaParameters.deltaEta1)
-
-		d0 = ROOT.Trk.ImpactParametersAndSigma__getD0(r)
-
-		##
-
-		summary = track.trackSummary()
-
-		if summary:
-			a = float(summary.get(ROOT.Trk.numberOfTRTHighThresholdHits) + summary.get(ROOT.Trk.numberOfTRTHighThresholdOutliers))
-			b = float(summary.get(ROOT.Trk.numberOfTRTHits             ) + summary.get(ROOT.Trk.numberOfTRTOutliers             ))
-
-			if b != 0.0:
-				rTRT = a / b
-			else:
-				rTRT = 0.000
-
-			nTRT = summary.get(ROOT.Trk.numberOfTRTHits)
-			nTRTOutliers = summary.get(ROOT.Trk.numberOfTRTOutliers)
-			nSi = summary.get(ROOT.Trk.numberOfPixelHits) + summary.get(ROOT.Trk.numberOfSCTHits)
-			nPix = summary.get(ROOT.Trk.numberOfPixelHits)
-			nPixOutliers = summary.get(ROOT.Trk.numberOfPixelOutliers)
-			nBlayer = summary.get(ROOT.Trk.numberOfBLayerHits)
-			nBlayerOutliers = summary.get(ROOT.Trk.numberOfBLayerOutliers)
-		else:
-			rTRT = 0.0
-
-			nTRT = 0
-			nTRTOutliers = 0
-			nSi = 0
-			nPix = 0
-			nPixOutliers = 0
-			nBlayer = 0
-			nBlayerOutliers = 0
-
-		##
-
-		expectBlayer = (electron.detailValue(ROOT.egammaParameters.expectHitInBLayer) > 0)
-
-		##
-
-		return ROOT.isMediumPlusPlus(
-			eta,
-			et,
-			rhad,
-			rhad1,
-			reta,
-			weta2,
-			f1,
-			wtots1,
-			demaxs1,
-			deltaEta,
-			d0,
-			rTRT,
-
-			nTRT,
-			nTRTOutliers,
-			nSi,
-			nPix,
-			nPixOutliers,
-			nBlayer,
-			nBlayerOutliers,
-
-			expectBlayer, False, isTrigger
-		);
-
-#############################################################################
-
 from AthenaCommon.AlgSequence import AlgSequence
 
 job = AlgSequence()
 job += uD3PD('uD3PD')
 
-theApp.EvtMax = 250
+theApp.EvtMax = 1000
 
 #############################################################################
 
