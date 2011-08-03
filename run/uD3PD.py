@@ -2,15 +2,15 @@
 # USER OPTIONS								    #
 #############################################################################
 
-#AtlGeo = 'ATLAS-GEO-16-00-00'
-#CondDB = 'OFLCOND-SDR-BS7T-04-13'
+AtlGeo = 'ATLAS-GEO-16-00-00'
+CondDB = 'OFLCOND-SDR-BS7T-04-13'
 
-AtlGeo = 'ATLAS-GEO-16-00-01'
-CondDB = 'COMCOND-BLKPST-004-07'
+#AtlGeo = 'ATLAS-GEO-16-00-01'
+#CondDB = 'COMCOND-BLKPST-004-07'
 
 #############################################################################
 
-isMC = False
+isMC = True
 
 isEGamma = False
 
@@ -19,8 +19,7 @@ InputFormat = 'AOD'
 #############################################################################
 
 InputFiles = [
-#	'../../AOD.280342._000152.pool.root'
-	'/tmp/jodier/DAOD_HSG2.384735._000027.pool.root'
+	'../../AOD.280342._000152.pool.root'
 ]
 
 OutputFile = 'output.root'
@@ -1388,26 +1387,29 @@ class uD3PD(PyAthena.Alg):
 		# SKIMMING						    #
 		#############################################################
 
-		N1 = 0
-		N2 = 0
-		N3 = 0
+		if isMC == False:
+			N1 = 0
+			N2 = 0
+			N3 = 0
 
-		for obj in self.StoreGateSvc['ElectronAODCollection']:
-			if (obj.author() == 1 or obj.author() == 3) and obj.isElectron(PyAthena.egammaPID.ElectronMedium):
-				N1 = N1 + 1
+			for obj in self.StoreGateSvc['ElectronAODCollection']:
+				if (obj.author() == 1 or obj.author() == 3) and obj.isElectron(PyAthena.egammaPID.ElectronMedium):
+					N1 = N1 + 1
 
-		for obj in self.StoreGateSvc['MuidMuonCollection']:
-			if obj.isTight():
-				N2 = N2 + 1
+			for obj in self.StoreGateSvc['MuidMuonCollection']:
+				if obj.isTight():
+					N2 = N2 + 1
 
-		for obj in self.StoreGateSvc['StacoMuonCollection']:
-			if obj.author() == 6 or obj.author() == 7:
-				N3 = N3 + 1
+			for obj in self.StoreGateSvc['StacoMuonCollection']:
+				if obj.author() == 6 or obj.author() == 7:
+					N3 = N3 + 1
 
-		#############################################################
+			N4 = N1 + max(N2, N3)
 
-		if NPV == 0 or (N1 < 2 and N2 < 2 and N3 < 2):
-			return PyAthena.StatusCode.Success
+			#####################################################
+
+			if NPV == 0 or (N1 < 2 and N2 < 2 and N3 < 2 and N4 < 2):
+				return PyAthena.StatusCode.Success
 
 		#############################################################
 		# ELECTRONS						    #
